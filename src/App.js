@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+// import { Button, Navbar } from "./components";
+// import SidePanel from "./components/SidePanel";
+// import Post from "./components/Post";
+// import posts from "./test-data/posts.json";
+
+import { Switch, Redirect } from "react-router-dom";
+import { Route } from "react-router";
+import { Navbar } from "./components";
+
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import Topic from "./pages/Topic";
+import ErrorPage from "./pages/404";
+import NewTopic from "./pages/CreateNewTopic";
+
+import { BaseCSS } from "styled-bootstrap-grid";
+
+import { connect } from "react-redux";
+import { fetchUser } from "./actions";
+import Login from "./pages/Login";
+
+class App extends React.Component {
+  // componentDidMount() {
+  //   this.props.fetchUser();
+  // }
+
+  PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route
+      {...rest}
+      render={props =>
+        this.props.user ? <Component {...props} /> : <Redirect to="/login" />
+      }
+    />
   );
+
+  render() {
+    return (
+      <>
+        <BaseCSS />
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <this.PrivateRoute exact path="/profile" component={Profile} />
+          {/* <Route exact path="/profile" component={Profile} /> */}
+          <Route exact path="/post/new-topic" component={NewTopic} />
+          <Route exact path="/post/:id" component={Topic} />
+          <Route exact path="/login" component={Login} />
+          <Route path="*" component={ErrorPage} />
+        </Switch>
+      </>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = ({ user }) => ({ user });
+
+export default connect(mapStateToProps)(App);
+// export default connect(mapStateToProps, { fetchUser })(App);
