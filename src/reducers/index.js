@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { LOGIN, LOGOUT } from "../actions/types";
+import { LOGIN, LOGOUT, IS_LOGGED_IN } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
   switch (type) {
@@ -7,6 +7,8 @@ const user = (state = null, { type, user }) => {
       return { ...state, ...user };
     case LOGOUT:
       return null;
+    case IS_LOGGED_IN:
+      return { ...state, ...user };
     default:
       return state;
   }

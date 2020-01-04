@@ -1,17 +1,26 @@
 import React, { useState } from "react";
-import { Editor, EditorState } from "draft-js";
+
 import { Container } from "styled-bootstrap-grid";
-import "draft-js/dist/Draft.css";
+import Dante from "dante2";
+import styled from "styled-components";
 
-const CreateNewTopic = () => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+const MyEditor = styled(Dante)`
+  padding: 32px;
+`;
 
+const Editor = props => {
   return (
     <Container>
-      huh?
-      <Editor editorState={editorState} onChange={setEditorState} />
+      <Dante
+        style={{
+          padding: 32,
+          width: "100%",
+          border: "1px solid black",
+          backgroundColor: "#FFF"
+        }}
+      />
     </Container>
   );
 };
 
-export default CreateNewTopic;
+export default Editor;

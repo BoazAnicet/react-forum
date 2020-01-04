@@ -18,7 +18,6 @@ import NewTopic from "./pages/CreateNewTopic";
 import { BaseCSS } from "styled-bootstrap-grid";
 
 import { connect } from "react-redux";
-import { fetchUser } from "./actions";
 import Login from "./pages/Login";
 
 class App extends React.Component {

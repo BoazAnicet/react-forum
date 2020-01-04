@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 import { Container } from "styled-bootstrap-grid";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { logout } from "../actions";
+import { logout, isLoggedIn } from "../actions";
 
 const Navbar = styled.nav`
   width: 100$;
@@ -26,6 +26,7 @@ const Logo = styled.div`
 
 const NavLink = styled(Link)`
   color: white;
+  text-decoration: none;
 `;
 
 const Dropdown = styled.div``;
@@ -52,28 +53,76 @@ const MyContainer = styled(Container)`
 
 const mapStateToProps = ({ user }) => ({ user });
 
-export default connect(mapStateToProps, { logout })(function({ user, logout }) {
-  return (
-    <Navbar>
-      <MyContainer>
-        <Logo>Logo</Logo>
-        {user ? (
-          <LinksContainer>
-            <NavItem>
-              <div onClick={logout}>Logout</div>
-            </NavItem>
-            <NavItem>
-              <NavLink to="/profile">{user.firstName}</NavLink>
-            </NavItem>
-          </LinksContainer>
-        ) : (
-          <LinksContainer>
-            <NavItem>
-              <NavLink to="/login">Log In</NavLink>
-            </NavItem>
-          </LinksContainer>
-        )}
-      </MyContainer>
-    </Navbar>
-  );
-});
+// export default connect(mapStateToProps, { logout, isLoggedIn })(function({
+//   user,
+//   logout
+// }) {
+//   return (
+//     <Navbar>
+//       <MyContainer>
+//         <Logo>Logo</Logo>
+//         {user ? (
+//           <LinksContainer>
+//             <NavItem>
+//               <div onClick={logout}>Logout</div>
+//             </NavItem>
+//             <NavItem>
+//               <NavLink to="/post/new-topic">New Topic</NavLink>
+//             </NavItem>
+//             <NavItem>
+//               <NavLink to="/profile">{user.firstName}</NavLink>
+//             </NavItem>
+//           </LinksContainer>
+//         ) : (
+//           <LinksContainer>
+//             <NavItem>
+//               <NavLink to="/login">Log In</NavLink>
+//             </NavItem>
+//           </LinksContainer>
+//         )}
+//       </MyContainer>
+//     </Navbar>
+//   );
+// });
+
+class Header extends Component {
+  componentDidMount() {
+    this.props.isLoggedIn();
+  }
+
+  render() {
+    const { user, logout } = this.props;
+    return (
+      <Navbar>
+        <MyContainer>
+          <Logo>
+            <NavLink to="/">Logo</NavLink>
+          </Logo>
+          {user ? (
+            <LinksContainer>
+              <NavItem>
+                <NavLink to="/" onClick={logout}>
+                  Logout
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/post/new-topic">New Topic</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/profile">{user.firstName}</NavLink>
+              </NavItem>
+            </LinksContainer>
+          ) : (
+            <LinksContainer>
+              <NavItem>
+                <NavLink to="/login">Log In</NavLink>
+              </NavItem>
+            </LinksContainer>
+          )}
+        </MyContainer>
+      </Navbar>
+    );
+  }
+}
+
+export default connect(mapStateToProps, { logout, isLoggedIn })(Header);
