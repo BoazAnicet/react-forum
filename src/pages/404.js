@@ -1,5 +1,6 @@
 import React from "react";
+import { Container } from "styled-bootstrap-grid";
 
 export default function() {
-  return <div>404 ain't nothing here</div>;
+  return <Container>404 ain't nothing here</Container>;
 }

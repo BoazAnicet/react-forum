@@ -1,9 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import Post from "../components/Post";
 import posts from "../test-data/posts.json";
 import { SidePanel } from "../components/";
 
 import { Col, Row, Container } from "styled-bootstrap-grid";
+import { connect } from "react-redux";
+import { getAllPosts } from "../actions";
 // const { title, body, comments, views, createdAt } = posts[0];
 // const { avatar } = posts[0].author;
 
@@ -38,12 +40,18 @@ const renderPosts = posts => {
     />
   ));
 };
+class Home extends Component {
+  componentDidMount() {
+    if (this.props.posts.length === 0) {
+      this.props.getAllPosts();
+    }
+  }
 
-export default function Home() {
-  return (
-    <>
-      <Container>
-        {/* <Post
+  render() {
+    return (
+      <>
+        <Container>
+          {/* <Post
         title={title}
         body={createSnippet(body)}
         avatar={avatar}
@@ -51,13 +59,18 @@ export default function Home() {
         views={views}
         date={createdAt}
       /> */}
-        <Row>
-          <Col lg="8">{renderPosts(posts)}</Col>
-          <Col lg="4">
-            <SidePanel />
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+          <Row>
+            <Col lg="8">{renderPosts(posts)}</Col>
+            <Col lg="4">
+              <SidePanel />
+            </Col>
+          </Row>
+        </Container>
+      </>
+    );
+  }
 }
+
+const mapStateToProps = ({ posts }) => ({ posts });
+
+export default connect(mapStateToProps, { getAllPosts })(Home);

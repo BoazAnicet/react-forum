@@ -13,7 +13,6 @@ function Profile({ user }) {
   return (
     <Container>
       <div>{`Hello, ${firstName}!`}</div>
-      {/* <div>{`Hello, ${firstName}!`}</div> */}
     </Container>
   );
 }

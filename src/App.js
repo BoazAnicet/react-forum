@@ -1,10 +1,5 @@
 import React from "react";
 
-// import { Button, Navbar } from "./components";
-// import SidePanel from "./components/SidePanel";
-// import Post from "./components/Post";
-// import posts from "./test-data/posts.json";
-
 import { Switch, Redirect } from "react-router-dom";
 import { Route } from "react-router";
 import { Navbar } from "./components";
@@ -21,10 +16,6 @@ import { connect } from "react-redux";
 import Login from "./pages/Login";
 
 class App extends React.Component {
-  // componentDidMount() {
-  //   this.props.fetchUser();
-  // }
-
   PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
       {...rest}
@@ -42,8 +33,11 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <this.PrivateRoute exact path="/profile" component={Profile} />
-          {/* <Route exact path="/profile" component={Profile} /> */}
-          <Route exact path="/post/new-topic" component={NewTopic} />
+          <this.PrivateRoute
+            exact
+            path="/post/new-topic"
+            component={NewTopic}
+          />
           <Route exact path="/post/:id" component={Topic} />
           <Route exact path="/login" component={Login} />
           <Route path="*" component={ErrorPage} />
@@ -56,4 +50,3 @@ class App extends React.Component {
 const mapStateToProps = ({ user }) => ({ user });
 
 export default connect(mapStateToProps)(App);
-// export default connect(mapStateToProps, { fetchUser })(App);

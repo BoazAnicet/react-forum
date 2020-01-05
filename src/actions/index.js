@@ -1,4 +1,5 @@
 import { LOGIN, LOGOUT, IS_LOGGED_IN } from "./types";
+import { getAllPosts, getPost } from "./postActions";
 import axios from "axios";
 
 export const login = (credentials, callback) => {
@@ -56,10 +57,12 @@ export const isLoggedIn = () => {
       },
       withCredentials: true
     });
-    console.log(user);
+
     dispatch({
       type: IS_LOGGED_IN,
       user: user.data.currentUser
     });
   };
 };
+
+export { getAllPosts, getPost };

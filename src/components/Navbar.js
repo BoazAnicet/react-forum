@@ -29,7 +29,18 @@ const NavLink = styled(Link)`
   text-decoration: none;
 `;
 
-const Dropdown = styled.div``;
+const Dropdown = styled.div`
+  position: relative;
+  display: inline-block;
+
+  :hover div {
+    display: block;
+  }
+`;
+const DropdownContent = styled.div`
+  display: none;
+  position: absolute;
+`;
 
 const LinksContainer = styled.ul`
   display: flex;
@@ -38,10 +49,13 @@ const LinksContainer = styled.ul`
   padding: 0;
   list-style: none;
   // float: right;
+  align-items: center;
 `;
 
 const NavItem = styled.li`
   margin-left: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const MyContainer = styled(Container)`
@@ -51,39 +65,10 @@ const MyContainer = styled(Container)`
   color: white;
 `;
 
-const mapStateToProps = ({ user }) => ({ user });
-
-// export default connect(mapStateToProps, { logout, isLoggedIn })(function({
-//   user,
-//   logout
-// }) {
-//   return (
-//     <Navbar>
-//       <MyContainer>
-//         <Logo>Logo</Logo>
-//         {user ? (
-//           <LinksContainer>
-//             <NavItem>
-//               <div onClick={logout}>Logout</div>
-//             </NavItem>
-//             <NavItem>
-//               <NavLink to="/post/new-topic">New Topic</NavLink>
-//             </NavItem>
-//             <NavItem>
-//               <NavLink to="/profile">{user.firstName}</NavLink>
-//             </NavItem>
-//           </LinksContainer>
-//         ) : (
-//           <LinksContainer>
-//             <NavItem>
-//               <NavLink to="/login">Log In</NavLink>
-//             </NavItem>
-//           </LinksContainer>
-//         )}
-//       </MyContainer>
-//     </Navbar>
-//   );
-// });
+const UserPhoto = styled.img`
+  border-radius: 50%;
+  height: 40px;
+`;
 
 class Header extends Component {
   componentDidMount() {
@@ -110,12 +95,21 @@ class Header extends Component {
               </NavItem>
               <NavItem>
                 <NavLink to="/profile">{user.firstName}</NavLink>
+                <NavLink to="/profile">
+                  <UserPhoto
+                    src={`${user.photo}`}
+                    alt={`${user.firstName}'s`}
+                  ></UserPhoto>
+                </NavLink>
               </NavItem>
             </LinksContainer>
           ) : (
             <LinksContainer>
               <NavItem>
                 <NavLink to="/login">Log In</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/signup">Sign Up</NavLink>
               </NavItem>
             </LinksContainer>
           )}
@@ -124,5 +118,7 @@ class Header extends Component {
     );
   }
 }
+
+const mapStateToProps = ({ user }) => ({ user });
 
 export default connect(mapStateToProps, { logout, isLoggedIn })(Header);

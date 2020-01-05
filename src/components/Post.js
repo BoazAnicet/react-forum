@@ -87,7 +87,7 @@ export default ({ title, body, views, date, commentCount, avatar, link }) => {
         <Link
           to={{
             pathname: `/post/dgdsa`,
-            state: 22332
+            state: { id: "5e04326e00f80c2d1c24579a" }
           }}
         >
           <PostTitle>{title}</PostTitle>
