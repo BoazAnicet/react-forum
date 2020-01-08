@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Container } from "styled-bootstrap-grid";
+import { Container, DropdownDivider, Image, Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout, isLoggedIn } from "../actions";
+import { Dropdown } from "semantic-ui-react";
 
 const Navbar = styled.nav`
   width: 100$;
@@ -22,6 +23,9 @@ const Logo = styled.div`
   // height: 20px;
   font-size: 24px;
   // float: left;
+  // margin-left: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const NavLink = styled(Link)`
@@ -29,14 +33,14 @@ const NavLink = styled(Link)`
   text-decoration: none;
 `;
 
-const Dropdown = styled.div`
-  position: relative;
-  display: inline-block;
+// const Dropdown = styled.div`
+//   position: relative;
+//   display: inline-block;
 
-  :hover div {
-    display: block;
-  }
-`;
+//   :hover div {
+//     display: block;
+//   }
+// `;
 const DropdownContent = styled.div`
   display: none;
   position: absolute;
@@ -71,39 +75,76 @@ const UserPhoto = styled.img`
 `;
 
 class Header extends Component {
-  componentDidMount() {
-    this.props.isLoggedIn();
-  }
+  handleLogout = () => {
+    this.props.history.push("/logout");
+  };
 
   render() {
     const { user, logout } = this.props;
+    const options = [
+      {
+        key: "user",
+        text: "Account",
+        icon: "user",
+        as: Link,
+        to: "/my-account"
+      },
+      { key: "settings", text: "Settings", icon: "settings" },
+      { key: "sign-out", text: "Sign Out", icon: "sign out" }
+    ];
+    // const trigger = (
+    //   <span>
+    //     <Image avatar src={user.photo} /> {user.firstName}
+    //   </span>
+    // );
     return (
       <Navbar>
-        <MyContainer>
+        <Container>
           <Logo>
             <NavLink to="/">Logo</NavLink>
           </Logo>
           {user ? (
-            <LinksContainer>
-              <NavItem>
-                <NavLink to="/" onClick={logout}>
-                  Logout
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/post/new-topic">New Topic</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/profile">{user.firstName}</NavLink>
-                <NavLink to="/profile">
-                  <UserPhoto
-                    src={`${user.photo}`}
-                    alt={`${user.firstName}'s`}
-                  ></UserPhoto>
-                </NavLink>
-              </NavItem>
-            </LinksContainer>
+            <Dropdown
+              text={`${user.firstName}`}
+              icon={user.photo}
+              style={{ color: "white" }}
+            >
+              <Dropdown.Menu style={{ zIndex: "20" }}>
+                <Dropdown.Item as={NavLink} to="/profile" text="Profile" />
+                <Dropdown.Item
+                  as={NavLink}
+                  to="/post/new-topic"
+                  text="New Topic"
+                />
+                <DropdownDivider />
+                <Dropdown.Item
+                  as={NavLink}
+                  to="/"
+                  text="Logout"
+                  onClick={logout}
+                />
+              </Dropdown.Menu>
+            </Dropdown>
           ) : (
+            // <LinksContainer>
+            //   <NavItem>
+            //     <NavLink to="/" onClick={logout}>
+            //       Logout
+            //     </NavLink>
+            //   </NavItem>
+            //   <NavItem>
+            //     <NavLink to="/post/new-topic">New Topic</NavLink>
+            //   </NavItem>
+            //   <NavItem>
+            //     <NavLink to="/profile">{user.firstName}</NavLink>
+            //     <NavLink to="/profile">
+            //       <UserPhoto
+            //         src={`${user.photo}`}
+            //         alt={`${user.firstName}'s`}
+            //       ></UserPhoto>
+            //     </NavLink>
+            //   </NavItem>
+            // </LinksContainer>
             <LinksContainer>
               <NavItem>
                 <NavLink to="/login">Log In</NavLink>
@@ -113,7 +154,7 @@ class Header extends Component {
               </NavItem>
             </LinksContainer>
           )}
-        </MyContainer>
+        </Container>
       </Navbar>
     );
   }

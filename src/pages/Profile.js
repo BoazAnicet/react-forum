@@ -1,22 +1,34 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { Container } from "styled-bootstrap-grid";
+import { isLoggedIn } from "../actions";
 
-function Profile({ user }) {
-  const history = useHistory();
-  // if (!user) {
-  //   history.push("/login");
-  // }
-  const { firstName, lastName } = user;
+class Profile extends Component {
+  //// http://127.0.0.1:3000/profile
 
-  return (
-    <Container>
-      <div>{`Hello, ${firstName}!`}</div>
-    </Container>
-  );
+  componentDidMount() {
+    this.props.isLoggedIn(
+      success => {},
+      fail => this.props.history.push("/login")
+    );
+  }
+
+  render() {
+    return this.props.user ? (
+      <Container>
+        <div>{this.props.user.firstName || "firstName"}</div>
+      </Container>
+    ) : (
+      <Container>Loading...</Container>
+    );
+    // return (
+    //   <Container>
+    //     <div>{this.props.user.firstName || "firstName"}</div>
+    //   </Container>
+    // );
+  }
 }
 
 const mapStateToProps = ({ user }) => ({ user });
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, { isLoggedIn })(Profile);

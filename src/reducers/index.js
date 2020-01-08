@@ -4,17 +4,27 @@ import {
   LOGOUT,
   IS_LOGGED_IN,
   GET_POST,
-  GET_ALL_POSTS
+  GET_ALL_POSTS,
+  SIGN_UP
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
   switch (type) {
     case LOGIN:
+    case IS_LOGGED_IN:
+    case SIGN_UP:
       return { ...state, ...user };
     case LOGOUT:
       return null;
+    default:
+      return state;
+  }
+};
+
+const loggedIn = (state = false, { type, bool }) => {
+  switch (type) {
     case IS_LOGGED_IN:
-      return { ...state, ...user };
+      return bool;
     default:
       return state;
   }
