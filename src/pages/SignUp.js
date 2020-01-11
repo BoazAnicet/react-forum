@@ -43,61 +43,67 @@ class SignUp extends Component {
     return (
       <Container>
         <Grid centered>
-          <Segment>
-            <Form onSubmit={this.handleSubmit}>
-              <Form.Group widths="equal">
-                <Form.Field
-                  placeholder="First Name"
-                  name="firstName"
-                  value={firstName}
-                  onChange={this.handleChange}
-                  label="First Name"
-                  control={Input}
-                  required
-                />
-                <Form.Field
-                  placeholder="Last Name"
-                  name="lastName"
-                  value={lastName}
-                  onChange={this.handleChange}
-                  label="Last Name"
-                  control={Input}
-                  required
-                />
-                <Form.Field
-                  placeholder="user@example.com"
-                  name="email"
-                  value={email}
-                  onChange={this.handleChange}
-                  label="Email Address"
-                  control={Input}
-                  type="email"
-                  required
-                />
-              </Form.Group>
-              <Form.Field
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={this.handleChange}
-                label="Password"
-                control={Input}
-                type="password"
-                required
-              />
-              <Form.Field
-                placeholder="Confirm Password"
-                name="passwordConfirm"
-                value={passwordConfirm}
-                onChange={this.handleChange}
-                label="Confirm Password"
-                control={Input}
-                type="password"
-                required
-              />
-              <Button type="submit">Submit</Button>
-            </Form>
-          </Segment>
+          <Grid.Column widescreen="12" mobile="16">
+            <Segment>
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Group widths="equal">
+                  <Form.Field
+                    placeholder="First Name"
+                    name="firstName"
+                    value={firstName}
+                    onChange={this.handleChange}
+                    label="First Name"
+                    control={Input}
+                    required
+                  />
+                  <Form.Field
+                    placeholder="Last Name"
+                    name="lastName"
+                    value={lastName}
+                    onChange={this.handleChange}
+                    label="Last Name"
+                    control={Input}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Field
+                    placeholder="user@example.com"
+                    name="email"
+                    value={email}
+                    onChange={this.handleChange}
+                    label="Email Address"
+                    control={Input}
+                    type="email"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Field
+                    placeholder="Password"
+                    name="password"
+                    value={password}
+                    onChange={this.handleChange}
+                    label="Password"
+                    control={Input}
+                    type="password"
+                    required
+                  />
+                  <Form.Field
+                    placeholder="Confirm Password"
+                    name="passwordConfirm"
+                    value={passwordConfirm}
+                    onChange={this.handleChange}
+                    label="Confirm Password"
+                    control={Input}
+                    type="password"
+                    required
+                  />
+                </Form.Group>
+                <Button type="submit">Submit</Button>
+              </Form>
+            </Segment>
+          </Grid.Column>
         </Grid>
       </Container>
     );

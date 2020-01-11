@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { login } from "../actions";
-import {
-  Button,
-  Container,
-  Form,
-  Input,
-  Grid,
-  Segment
-} from "semantic-ui-react";
+import { Container, Form, Input, Grid, Segment } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 
 const Login = ({ login, user }) => {

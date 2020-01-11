@@ -6,4 +6,5 @@ export const GET_ONE_USER = "GET_ONE_USER";
 export const SIGN_UP = "SIGN_UP";
 // POSTS
 export const GET_POST = "GET_POST";
-export const GET_ALL_POSTS = "GET_ALL_POSTS";
+export const GET_MANY_POSTS = "GET_MANY_POSTS";
+export const CREATE_POST = "CREATE_POST";

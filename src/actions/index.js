@@ -1,5 +1,5 @@
 import { LOGIN, LOGOUT, IS_LOGGED_IN } from "./types";
-import { getAllPosts, getPost } from "./postActions";
+import { getManyPosts, getPost } from "./postActions";
 import { signUp } from "./userActions";
 import axios from "axios";
 
@@ -75,4 +75,4 @@ export const isLoggedIn = (success, fail) => {
   };
 };
 
-export { getAllPosts, getPost, signUp };
+export { getManyPosts, getPost, signUp };

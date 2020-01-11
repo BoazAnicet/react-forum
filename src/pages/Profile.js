@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container } from "styled-bootstrap-grid";
+import { Container, Loader } from "semantic-ui-react";
 import { isLoggedIn } from "../actions";
 
 class Profile extends Component {
   //// http://127.0.0.1:3000/profile
-
   componentDidMount() {
     this.props.isLoggedIn(
       success => {},
@@ -19,13 +18,10 @@ class Profile extends Component {
         <div>{this.props.user.firstName || "firstName"}</div>
       </Container>
     ) : (
-      <Container>Loading...</Container>
+      <Container>
+        <Loader active>Loading</Loader>
+      </Container>
     );
-    // return (
-    //   <Container>
-    //     <div>{this.props.user.firstName || "firstName"}</div>
-    //   </Container>
-    // );
   }
 }
 

@@ -4,8 +4,9 @@ import {
   LOGOUT,
   IS_LOGGED_IN,
   GET_POST,
-  GET_ALL_POSTS,
-  SIGN_UP
+  GET_MANY_POSTS,
+  SIGN_UP,
+  CREATE_POST
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
@@ -21,18 +22,11 @@ const user = (state = null, { type, user }) => {
   }
 };
 
-const loggedIn = (state = false, { type, bool }) => {
-  switch (type) {
-    case IS_LOGGED_IN:
-      return bool;
-    default:
-      return state;
-  }
-};
-
 const post = (state = null, { type, post }) => {
   switch (type) {
     case GET_POST:
+      return post;
+    case CREATE_POST:
       return post;
     default:
       return state;
@@ -41,8 +35,8 @@ const post = (state = null, { type, post }) => {
 
 const posts = (state = [], { type, posts }) => {
   switch (type) {
-    case GET_ALL_POSTS:
-      return [...state, ...posts];
+    case GET_MANY_POSTS:
+      return [...posts];
     default:
       return state;
   }

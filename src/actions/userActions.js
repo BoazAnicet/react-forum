@@ -1,4 +1,4 @@
-import { GET_ONE_USER, SIGN_UP } from "./types";
+import { SIGN_UP } from "./types";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:3001/api/v1/users";
 

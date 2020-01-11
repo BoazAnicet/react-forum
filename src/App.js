@@ -11,11 +11,11 @@ import ErrorPage from "./pages/404";
 import NewTopic from "./pages/CreateNewTopic";
 import Login from "./pages/Login";
 
-import { BaseCSS } from "styled-bootstrap-grid";
 import { connect } from "react-redux";
 
 import { isLoggedIn } from "./actions";
 import SignUp from "./pages/SignUp";
+import Category from "./pages/Category";
 
 class App extends React.Component {
   componentDidMount() {
@@ -39,21 +39,23 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <BaseCSS />
         <Navbar />
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/">
+            <Redirect to="/forum" />
+          </Route>
+          <Route exact path="/forum" component={Home} />
+          <Route exact path="/forum/:category" component={Category} />
           {/* <this.PrivateRoute exact path="/profile" component={Profile} /> */}
           <Route exact path="/profile" component={Profile} />
-          <this.PrivateRoute
-            exact
-            path="/post/new-topic"
-            component={NewTopic}
-          />
+          <this.PrivateRoute exact path="/post/new-post" component={NewTopic} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/post/:id" component={Topic} />
           <Route exact path="/login" component={Login} />
-          <Route path="*" component={ErrorPage} />
+          <Route exact path="/error" component={ErrorPage} />
+          <Route path="*">
+            <Redirect to="/error" />
+          </Route>
         </Switch>
       </>
     );
