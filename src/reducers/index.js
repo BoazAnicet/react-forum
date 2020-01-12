@@ -6,7 +6,10 @@ import {
   GET_POST,
   GET_MANY_POSTS,
   SIGN_UP,
-  CREATE_POST
+  CREATE_POST,
+  DELETE_COMMENT,
+  FETCH_COMMENTS,
+  POST_COMMENT
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
@@ -42,4 +45,16 @@ const posts = (state = [], { type, posts }) => {
   }
 };
 
-export default combineReducers({ user, post, posts });
+const comments = (state = [], { type, payload }) => {
+  switch (type) {
+    case FETCH_COMMENTS:
+      return [...payload];
+    case DELETE_COMMENT:
+    case POST_COMMENT:
+      return [...state, payload];
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({ user, post, posts, comments });

@@ -31,30 +31,22 @@ export const getPost = (id, success, fail) => {
   };
 };
 
-export const getManyPosts = data => {
-  return async dispatch => {
+export const getManyPosts = (data, success, fail) => async dispatch => {
+  try {
     const res = await axios.get(
       baseUrl,
       { params: { ...data } },
       { withCredentials: true }
     );
 
-    // ({
-    //   method: "GET",
-    //   url: `${baseUrl}`,
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Credentials": true
-    //   },
-    //   withCredentials: true,
-    // });
-
     dispatch({
       type: GET_MANY_POSTS,
       posts: res.data.data.posts
     });
-  };
+    success();
+  } catch (error) {
+    fail();
+  }
 };
 
 export const createPost = (data, success, fail) => {

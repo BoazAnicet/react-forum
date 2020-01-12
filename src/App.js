@@ -20,8 +20,8 @@ import Category from "./pages/Category";
 class App extends React.Component {
   componentDidMount() {
     this.props.isLoggedIn(
-      () => console.log("Success in app.js"),
-      () => console.log("Fail in app.js")
+      () => {},
+      () => {}
     );
   }
 
@@ -48,7 +48,8 @@ class App extends React.Component {
           <Route exact path="/forum/:category" component={Category} />
           {/* <this.PrivateRoute exact path="/profile" component={Profile} /> */}
           <Route exact path="/profile" component={Profile} />
-          <this.PrivateRoute exact path="/post/new-post" component={NewTopic} />
+          {/* <this.PrivateRoute exact path="/post/new-post" component={NewTopic} /> */}
+          <Route exact path="/post/new-post" component={NewTopic} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/post/:id" component={Topic} />
           <Route exact path="/login" component={Login} />
@@ -64,5 +65,4 @@ class App extends React.Component {
 
 const mapStateToProps = ({ user }) => ({ user });
 
-// export default withCookies(connect(mapStateToProps, { isLoggedIn })(App));
 export default connect(mapStateToProps, { isLoggedIn })(App);

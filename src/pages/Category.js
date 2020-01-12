@@ -12,8 +12,11 @@ class Category extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getManyPosts({ category: this.state.category });
-    this.setState({ loading: false });
+    this.props.getManyPosts(
+      { category: this.state.category },
+      success => this.setState({ loading: false }),
+      fail => {}
+    );
   }
 
   renderPosts = () => {
@@ -35,7 +38,7 @@ class Category extends React.Component {
           </span>
         </Table.Cell>
         <Table.Cell>
-          <p>{`${post.author.firstName} ${post.author.lastName}`} </p>
+          <p>{`${post.author}`}</p>
         </Table.Cell>
         <Table.Cell>
           <span>{post.comments.length}</span>

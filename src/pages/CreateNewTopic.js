@@ -11,6 +11,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { createPost } from "../actions/postActions";
+import { isLoggedIn } from "../actions";
 import faker from "faker";
 
 const categories = [
@@ -26,10 +27,23 @@ const categories = [
 ];
 
 class NewPost extends Component {
+  componentDidMount() {
+    this.props.isLoggedIn(
+      success => {},
+      fail => this.props.history.push("/login")
+    );
+  }
+
+  // state = {
+  //   title: "",
+  //   body: "",
+  //   category: "",
+  //   author: faker.name.findName()
+  // };
   state = {
-    title: "",
-    body: "",
-    category: "",
+    title: faker.lorem.sentence(),
+    body: faker.lorem.paragraphs(5, "\n\n"),
+    category: categories[Math.floor(Math.random(categories.length))],
     author: faker.name.findName()
   };
 
@@ -78,6 +92,7 @@ class NewPost extends Component {
                     options={categories}
                     name="category"
                     onChange={this.handleChange}
+                    required
                   />
                 </Form.Field>
                 <Form.Field>
@@ -99,4 +114,4 @@ class NewPost extends Component {
 }
 const mapStateToProps = ({ post }) => ({ post });
 
-export default connect(mapStateToProps, { createPost })(NewPost);
+export default connect(mapStateToProps, { createPost, isLoggedIn })(NewPost);
