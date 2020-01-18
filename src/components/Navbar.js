@@ -7,7 +7,11 @@ import { Menu, Container } from "semantic-ui-react";
 class Navbar extends Component {
   render() {
     return (
-      <Menu borderless pointing style={{ marginBottom: "30px" }}>
+      <Menu
+        borderless
+        pointing
+        style={{ marginBottom: "30px", position: "sticky", top: 0 }}
+      >
         <Container>
           <Menu.Item name="home" as={Link} to="/" />
           <Menu.Menu position="right">

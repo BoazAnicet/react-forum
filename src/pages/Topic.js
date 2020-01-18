@@ -13,12 +13,17 @@ import { getPost, fetchComments, postComment } from "../actions";
 import moment from "moment";
 import faker from "faker";
 
+import ReactHtmlParser from "react-html-parser";
+
 class Topic extends Component {
   state = {
     loading: true,
     pathname: this.props.location.pathname.split("/")[2],
     comment: "",
-    author: faker.name.findName()
+    author: {
+      name: faker.name.findName(),
+      avatar: faker.image.avatar()
+    }
   };
 
   componentDidMount() {
@@ -36,23 +41,28 @@ class Topic extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    if (!this.props.user) this.props.history.push("/login");
     const { comment, author } = this.state;
 
     this.props.postComment({
+      author: {
+        name: faker.name.findName(),
+        avatar: faker.image.avatar()
+      },
       body: comment,
-      post: this.props.post._id,
-      author
+      createdAt: Date.now(),
+      post: this.props.post._id
     });
 
-    this.setState({ comment: "", author: faker.name.findName() });
+    this.setState({ comment: "", author: {} });
   };
 
   renderComments = () => {
     return this.props.comments.map(comment => (
       <Comment key={comment._id}>
-        <Comment.Avatar src={comment.avatar} />
+        <Comment.Avatar src={comment.author.avatar} />
         <Comment.Content>
-          <Comment.Author as="span">{comment.author}</Comment.Author>
+          <Comment.Author as="span">{comment.author.name}</Comment.Author>
           <Comment.Metadata>
             <div>{moment(comment.createdAt).fromNow()}</div>
           </Comment.Metadata>
@@ -66,8 +76,11 @@ class Topic extends Component {
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-  /// 5e18ed676179c69fb0ac97a9
-  // http://127.0.0.1:3000/post/5e18ed676179c69fb0ac97a9
+  removeNBSP = str => {
+    // let string = ''.replace()
+    return str.replace(/&nbsp;/g, " ");
+  };
+
   render() {
     return this.state.loading ? (
       <Container>
@@ -82,11 +95,27 @@ class Topic extends Component {
           "MMM. Do, YYYY"
         )}`}</div>
         <div>Author: {this.props.post.author}</div>
-        <p style={{ whiteSpace: "pre-line" }}>Body: {this.props.post.body}</p>
+        {/* http://127.0.0.1:3000/post/5e222c51c973d8649c956f64 */}
+
+        <div
+          style={{
+            whiteSpace: "pre-line"
+            // wordWrap: "break-word",
+            // overflowWrap: "break-word"
+            // wordBreak: "break-word"
+          }}
+        >
+          {ReactHtmlParser(
+            ReactHtmlParser(this.removeNBSP(this.props.post.body))
+          )}
+        </div>
+
+        {/* <p style={{ whiteSpace: "pre-line" }}>Body: {this.props.post.body}</p> */}
         <Divider></Divider>
         <Comment.Group>
           <Header as="h3" dividing>
-            Comments
+            {`${this.props.comments.length}`}{" "}
+            {this.props.comments.length === 1 ? "Comment" : "Comments"}
           </Header>
 
           {this.props.comments ? (
@@ -94,7 +123,7 @@ class Topic extends Component {
           ) : (
             <div>Be the first to comment!</div>
           )}
-          <Form reply onSubmit={this.handleSubmit}>
+          <Form reply onSubmit={this.handleSubmit} style={{ marginBottom: 30 }}>
             <Form.TextArea
               name="comment"
               value={this.state.comment}
@@ -115,7 +144,11 @@ class Topic extends Component {
   }
 }
 
-const mapStateToProps = ({ post, comments }) => ({ post, comments });
+const mapStateToProps = ({ post, comments, user }) => ({
+  post,
+  comments,
+  user
+});
 
 export default connect(mapStateToProps, {
   getPost,

@@ -24,11 +24,11 @@ class Category extends React.Component {
       <Table.Row key={post._id}>
         <Table.Cell>
           <span
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis"
-            }}
+          // style={{
+          //   // whiteSpace: "nowrap",
+          //   overflow: "hidden",
+          //   textOverflow: "ellipsis"
+          // }}
           >
             <Link to={`/post/${post._id}`}>{post.title}</Link>
           </span>

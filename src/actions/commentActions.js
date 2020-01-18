@@ -35,6 +35,6 @@ export const postComment = body => async dispatch => {
 
     console.log(res.data.comment);
   } catch (error) {
-    console.log("error creating comment");
+    console.log(error.message);
   }
 };

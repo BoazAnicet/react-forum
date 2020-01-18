@@ -25,7 +25,7 @@ class SignUp extends Component {
     e.preventDefault();
     console.log("Form submitted.");
     this.props.signUp(
-      this.state,
+      { ...this.state, joinDate: Date.now() },
       () => this.props.history.push("/profile"),
       () => console.log("Something went wrong.")
     );
