@@ -2,6 +2,7 @@ import { LOGIN, LOGOUT, IS_LOGGED_IN } from "./types";
 import { getManyPosts, getPost } from "./postActions";
 import { signUp } from "./userActions";
 import { deleteComment, fetchComments, postComment } from "./commentActions";
+import { createThread, getThread } from "./threadActions";
 import axios from "axios";
 const baseURL = "http://127.0.0.1:3001/api/v1/users";
 
@@ -64,5 +65,7 @@ export {
   signUp,
   deleteComment,
   fetchComments,
-  postComment
+  postComment,
+  createThread,
+  getThread
 };

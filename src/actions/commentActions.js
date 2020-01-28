@@ -1,4 +1,4 @@
-import { DELETE_COMMENT, FETCH_COMMENTS, POST_COMMENT } from "./types";
+import { FETCH_COMMENTS, POST_COMMENT } from "./types";
 import axios from "axios";
 const baseURL = "http://127.0.0.1:3001/api/v1/comments";
 

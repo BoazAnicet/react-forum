@@ -14,3 +14,7 @@ export const CREATE_POST = "CREATE_POST";
 export const FETCH_COMMENTS = "FETCH_COMMENTS";
 export const POST_COMMENT = "POST_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
+
+// THREAD
+export const CREATE_THREAD = "CREATE_THREAD";
+export const GET_THREAD = "GET_THREAD";

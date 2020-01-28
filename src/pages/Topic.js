@@ -1,19 +1,20 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Loader,
-  Header,
-  Comment,
-  Divider,
-  Form,
-  Button
-} from "semantic-ui-react";
 import { connect } from "react-redux";
 import { getPost, fetchComments, postComment } from "../actions";
 import moment from "moment";
 import faker from "faker";
 
 import ReactHtmlParser from "react-html-parser";
+import {
+  Typography,
+  Divider,
+  Button,
+  Container,
+  CircularProgress,
+  TextField
+} from "@material-ui/core";
+
+import { Post } from "../components";
 
 class Topic extends Component {
   state = {
@@ -57,24 +58,18 @@ class Topic extends Component {
     this.setState({ comment: "", author: {} });
   };
 
-  renderComments = () => {
-    return this.props.comments.map(comment => (
-      <Comment key={comment._id}>
-        <Comment.Avatar src={comment.author.avatar} />
-        <Comment.Content>
-          <Comment.Author as="span">{comment.author.name}</Comment.Author>
-          <Comment.Metadata>
-            <div>{moment(comment.createdAt).fromNow()}</div>
-          </Comment.Metadata>
-          <Comment.Text style={{ whiteSpace: "pre-line" }}>
-            {comment.body}
-          </Comment.Text>
-        </Comment.Content>
-      </Comment>
+  renderPosts = () => {
+    return this.props.comments.map(p => (
+      <>
+        <Post key={p._id} author={p.author} body={p.body} post={p} />
+        <Divider />
+      </>
     ));
   };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
+
+  handleComment = e => this.setState({ comment: e.target.value });
 
   removeNBSP = str => {
     // let string = ''.replace()
@@ -84,20 +79,20 @@ class Topic extends Component {
   render() {
     return this.state.loading ? (
       <Container>
-        <Loader active>Loading</Loader>
+        <CircularProgress />
       </Container>
     ) : this.props.post ? (
-      <Container text>
-        <Header as="h2" dividing>
-          {this.props.post.title}
-        </Header>
-        <div>{`Created At: ${moment(this.props.post.createdAt).format(
-          "MMM. Do, YYYY"
-        )}`}</div>
-        <div>Author: {this.props.post.author}</div>
+      <Container maxWidth="lg">
+        <Typography variant="h4">{this.props.post.title}</Typography>
+        <Typography>
+          {`${this.props.post.author} | ${moment(
+            this.props.post.createdAt
+          ).format("MMM. Do, YYYY")}`}{" "}
+        </Typography>
         {/* http://127.0.0.1:3000/post/5e222c51c973d8649c956f64 */}
 
-        <div
+        <Typography
+          variant="body1"
           style={{
             whiteSpace: "pre-line"
             // wordWrap: "break-word",
@@ -108,35 +103,35 @@ class Topic extends Component {
           {ReactHtmlParser(
             ReactHtmlParser(this.removeNBSP(this.props.post.body))
           )}
-        </div>
+        </Typography>
 
-        {/* <p style={{ whiteSpace: "pre-line" }}>Body: {this.props.post.body}</p> */}
         <Divider></Divider>
-        <Comment.Group>
-          <Header as="h3" dividing>
-            {`${this.props.comments.length}`}{" "}
-            {this.props.comments.length === 1 ? "Comment" : "Comments"}
-          </Header>
+        <Typography variant="h6">
+          {`${this.props.comments.length}`}{" "}
+          {this.props.comments.length === 1 ? "Comment" : "Comments"}
+        </Typography>
+        {/* <Divider></Divider> */}
 
-          {this.props.comments ? (
-            <>{this.renderComments()}</>
-          ) : (
-            <div>Be the first to comment!</div>
-          )}
-          <Form reply onSubmit={this.handleSubmit} style={{ marginBottom: 30 }}>
-            <Form.TextArea
-              name="comment"
-              value={this.state.comment}
-              onChange={this.handleChange}
-            />
-            <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
-              primary
-            />
-          </Form>
-        </Comment.Group>
+        {this.props.comments ? (
+          <>{this.renderPosts()}</>
+        ) : (
+          // <>{this.renderComments()}</>
+          <div>Be the first to comment!</div>
+        )}
+        <form onSubmit={this.handleSubmit} style={{ marginBottom: 30 }}>
+          <TextField
+            label="comment"
+            multiline
+            rows="4"
+            defaultValue="Default Value"
+            variant="filled"
+            value={this.state.comment}
+            onChange={this.handleComment}
+          />
+          <Button color="primary" variant="contained" type="submit">
+            Add Reply
+          </Button>
+        </form>
       </Container>
     ) : (
       <>{this.props.history.push("/")}</>

@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Topic from "./pages/Topic";
 import ErrorPage from "./pages/404";
-import NewTopic from "./pages/CreateNewTopic";
+import NewThread from "./pages/NewThread";
 import Login from "./pages/Login";
 
 import { connect } from "react-redux";
@@ -17,11 +17,14 @@ import { isLoggedIn } from "./actions";
 import SignUp from "./pages/SignUp";
 import Category from "./pages/Category";
 
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Thread from "./pages/Thread";
+
 class App extends React.Component {
   componentDidMount() {
     this.props.isLoggedIn(
-      () => {},
-      () => {}
+      success => {},
+      fail => {}
     );
   }
 
@@ -34,11 +37,11 @@ class App extends React.Component {
     />
   );
 
-  //// http://127.0.0.1:3000/profile
-
   render() {
     return (
       <>
+        <CssBaseline />
+
         <Navbar />
         <Switch>
           <Route exact path="/">
@@ -49,7 +52,8 @@ class App extends React.Component {
           {/* <this.PrivateRoute exact path="/profile" component={Profile} /> */}
           <Route exact path="/profile" component={Profile} />
           {/* <this.PrivateRoute exact path="/post/new-post" component={NewTopic} /> */}
-          <Route exact path="/post/new-post" component={NewTopic} />
+          <Route exact path="/thread/new" component={NewThread} />
+          <Route exact path="/thread/:id" component={Thread} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/post/:id" component={Topic} />
           <Route exact path="/login" component={Login} />

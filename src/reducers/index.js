@@ -9,7 +9,9 @@ import {
   CREATE_POST,
   DELETE_COMMENT,
   FETCH_COMMENTS,
-  POST_COMMENT
+  POST_COMMENT,
+  CREATE_THREAD,
+  GET_THREAD
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
@@ -29,17 +31,19 @@ const post = (state = null, { type, post }) => {
   switch (type) {
     case GET_POST:
       return post;
-    case CREATE_POST:
-      return post;
+    // case CREATE_POST:
+    //   return post;
     default:
       return state;
   }
 };
 
-const posts = (state = [], { type, posts }) => {
+const posts = (state = [], { type, payload }) => {
   switch (type) {
     case GET_MANY_POSTS:
-      return [...posts];
+      return [...payload];
+    case CREATE_POST:
+      return [...state, payload];
     default:
       return state;
   }
@@ -57,4 +61,15 @@ const comments = (state = [], { type, payload }) => {
   }
 };
 
-export default combineReducers({ user, post, posts, comments });
+const thread = (state = {}, { type, payload }) => {
+  switch (type) {
+    case CREATE_THREAD:
+      return payload;
+    case GET_THREAD:
+      return payload;
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({ user, post, posts, comments, thread });

@@ -41,11 +41,12 @@ export const getManyPosts = (data, success, fail) => async dispatch => {
 
     dispatch({
       type: GET_MANY_POSTS,
-      posts: res.data.data.posts
+      payload: res.data.data.posts
     });
+
     success();
   } catch (error) {
-    fail();
+    fail(error);
   }
 };
 
@@ -60,10 +61,12 @@ export const createPost = (data, success, fail) => {
 
       dispatch({
         type: CREATE_POST,
-        post: res.data.data.post
+        payload: res.data.data.post
       });
+
       success();
     } catch (error) {
+      console.log(error.message);
       fail();
     }
   };

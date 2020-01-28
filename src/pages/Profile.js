@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container, Loader } from "semantic-ui-react";
+import { Container, CircularProgress } from "@material-ui/core";
 import { isLoggedIn } from "../actions";
 
 class Profile extends Component {
@@ -19,7 +19,7 @@ class Profile extends Component {
       </Container>
     ) : (
       <Container>
-        <Loader active>Loading</Loader>
+        <CircularProgress>Loading</CircularProgress>
       </Container>
     );
   }

@@ -1,106 +1,109 @@
 import React from "react";
-import styled from "styled-components";
+import { Paper, Avatar, Grid, Typography, makeStyles } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
+import ReactHtmlParser from "react-html-parser";
 import moment from "moment";
-import { Link } from "react-router-dom";
 
-const Post = styled.div`
-  width: 100%;
-  box-shadow: 0px 1px 2px #999;
-  background-color: #fff;
-  display: flex;
-  margin-bottom: 20px;
-`;
-
-const PostAvatar = styled.img`
-  border-radius: 50%;
-  width: 50px;
-`;
-
-const PostTitle = styled.h4`
-  padding-bottom: 15px;
-  margin: 0;
-`;
-
-const PostSnippet = styled.p`
-  margin: 0;
-  color: #999;
-  font-size: 14px;
-`;
-
-const PostViews = styled.div`
-  border-top: 1px solid #eee;
-  padding: 10px;
-`;
-
-const PostCommentCount = styled.div`
-  padding: 10px;
-`;
-
-const PostDate = styled.div`
-  position: relative;
-  border-top: 1px solid #eee;
-  padding: 10px;
-
-  ::after {
-    content: attr(data-date);
-    position: absolute;
-    height: 30px;
-    background-color: #fff;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    visibility: hidden;
-    box-shadow: 0px 1px 2px #999;
-    border-radius: 5px;
-    padding: 5px;
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginBottom: 10,
+    overflow: "hidden"
+  },
+  text: {
+    whiteSpace: "pre-line"
+  },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7)
+  },
+  date: {
+    color: "#FFF",
+    backgroundColor: "#333",
+    padding: 5
+  },
+  author: { padding: 10 },
+  signature: {
+    // padding: 10
   }
+}));
 
-  :hover::after {
-    visibility: visible;
-    transition-delay: 1s;
-  }
-`;
+export default props => {
+  const classes = useStyles();
+  const { body, created, author, edited } = props.post;
 
-const AuthorContainer = styled.div`
-  padding: 20px;
-  border-right: 1px solid #eee;
-`;
-
-const TextContainer = styled.div`
-  padding: 20px;
-  border-right: 1px solid #eee;
-  flex: 1;
-`;
-
-const InfoContainer = styled.div`
-  min-width: 125px;
-  font-size: 14px;
-`;
-
-export default ({ title, body, views, date, commentCount, avatar, link }) => {
   return (
-    <Post>
-      <AuthorContainer>
-        <PostAvatar src={avatar} />
-      </AuthorContainer>
-      <TextContainer>
-        <Link
-          to={{
-            pathname: `/post/dgdsa`,
-            state: { id: "5e04326e00f80c2d1c24579a" }
-          }}
+    <Paper elevation={1} className={classes.paper}>
+      <Grid xs={12} className={classes.date}>
+        <Typography variant="caption">{`Posted ${moment(created).format(
+          "LLL"
+        )}`}</Typography>
+      </Grid>
+
+      <Grid container item spacing={1} className={classes.author}>
+        <Grid
+          item
+          container
+          xs={12}
+          md={3}
+          spacing={0}
+          alignItems="center"
+          direction="column"
         >
-          <PostTitle>{title}</PostTitle>
-        </Link>
-        <PostSnippet>{body}</PostSnippet>
-      </TextContainer>
-      <InfoContainer style={{ textAlign: "center" }}>
-        <PostCommentCount>{commentCount}</PostCommentCount>
-        <PostViews>{views}</PostViews>
-        <PostDate data-date={moment(date).format("MMM. Do, YYYY")}>
-          {moment(date).fromNow()}
-        </PostDate>
-      </InfoContainer>
-    </Post>
+          <Grid item>
+            <Typography variant="subtitle1" className={classes.link}>
+              {author.firstName}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="caption">Member</Typography>
+          </Grid>
+          <Grid item>
+            <Avatar src={author.avatar} className={classes.large} />
+          </Grid>
+
+          <Grid item>
+            <Typography variant="caption">{`Joined: ${moment(
+              author.joinDate
+            ).format("MMM. Do, YYYY")}`}</Typography>
+          </Grid>
+
+          <Grid item>
+            <Typography variant="caption">{`Posts: ${"99"}`}</Typography>
+          </Grid>
+          {/* <Divider orientation="vertical" /> */}
+        </Grid>
+
+        <Grid item xs={12} md={9} style={{ padding: 10 }}>
+          {/* <Typography color="textSecondary" variant="caption">{`Posted ${moment(
+            created
+          ).format("LLL")}`}</Typography> */}
+          <div className={classes.text}>
+            {ReactHtmlParser(ReactHtmlParser(body))}
+          </div>
+
+          {edited ? (
+            <Typography variant="caption">
+              <em>
+                Last edited by Adam Pontepie on Jan. 1st, 2020 at 12:11 PM
+              </em>
+            </Typography>
+          ) : (
+            <></>
+          )}
+
+          {!author.signature ? (
+            <>
+              <Divider />
+              <br />
+              <Typography variant="caption" className={classes.signature}>
+                Lorum ipsum~~~~
+              </Typography>
+            </>
+          ) : (
+            <></>
+          )}
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
