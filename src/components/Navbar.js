@@ -1,111 +1,83 @@
-// eslint-disable-next-line
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
 import { logout, isLoggedIn } from "../actions";
-// import { Menu, Container } from "semantic-ui-react";
 import {
   AppBar,
   Toolbar,
-  // IconButton,
   Typography,
   Container,
   makeStyles,
   Avatar
 } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-// import { Menu } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    marginBottom: 20
   },
   menuButton: {
     marginRight: theme.spacing(2)
   },
-  title: {
-    flexGrow: 1
-  }
+  logo: {
+    flexGrow: 1,
+    textDecoration: "none",
+    color: "inherit"
+  },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+    marginRight: theme.spacing(2)
+  },
+  toolbar: { padding: 0 }
 }));
 
 const Navbar = props => {
   const classes = useStyles();
+  const history = useHistory();
+  const user = useSelector(state => state.user);
+
+  const logout = () => {
+    props.logout();
+    history.push("/");
+  };
 
   return (
-    // <Menu
-    //   borderless
-    //   pointing
-    //   style={{ marginBottom: "30px", position: "sticky", top: 0 }}
-    // >
-    //   <Container>
-    //     <Menu.Item name="home" as={Link} to="/" />
-    //     <Menu.Menu position="right">
-    //       {this.props.user ? (
-    //         <>
-    //           <Menu.Item name="new post" as={Link} to="/post/new-post" />
-    //           <Menu.Item name="logout" onClick={this.props.logout} />
-    //           <Menu.Item
-    //             name={this.props.user.firstName}
-    //             as={Link}
-    //             to="/profile"
-    //           />
-    //         </>
-    //       ) : (
-    //         <>
-    //           <Menu.Item name="login" as={Link} to="/login" />
-    //           <Menu.Item name="sign-up" as={Link} to="/signup" />
-    //         </>
-    //       )}
-    //     </Menu.Menu>
-    //   </Container>
-    // </Menu>
-
-    <AppBar position="static">
+    <AppBar position="static" className={classes.root}>
       <Container maxWidth="md">
-        <Toolbar>
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
+        <Toolbar className={classes.toolbar}>
+          <Typography
+            variant="h6"
+            className={classes.logo}
+            to="/"
+            component={props => <Link {...props} />}
           >
-            <Menu />
-          </IconButton> */}
-          <Typography variant="h6" className={classes.title}>
             ReactForum
           </Typography>
-
-          {props.user ? (
+          {user ? (
             <>
-              <Link to="/thread/new">New Thread</Link>
-              {/* <Link component={Button} to="/post/new-post">
-                New Post
-              </Link> */}
-              <Button color="primary" onClick={props.logout}>
-                Logout
-              </Button>
-              {/* <Button color="primary" onClick={props.logout}>
-                Logout
-              </Button> */}
+              <Link to="/thread/new" className={classes.link}>
+                <Typography>New Thread</Typography>
+              </Link>
+              <Link to="/" className={classes.link} onClick={logout}>
+                <Typography>Logout</Typography>
+              </Link>
               <Avatar
                 alt="me"
-                src={props.user.photo}
+                src={user.photo}
                 component={Link}
                 to="/profile"
               />
             </>
           ) : (
-            // <Button
-            //   color="primary"
-            //   component={props => <Link to="/" {...props} />}
-            //   >
-            //   Login
-            //   </Button>
-
-            <Link to="/login">Login</Link>
-            // <Link component={Button} to="/login">
-            //   Login
-            // </Link>
+            <>
+              <Link to="/login" className={classes.link}>
+                <Typography>Login</Typography>
+              </Link>
+              <Link to="/signup" className={classes.link}>
+                <Typography>Sign Up</Typography>
+              </Link>
+            </>
           )}
         </Toolbar>
       </Container>
@@ -113,6 +85,4 @@ const Navbar = props => {
   );
 };
 
-const mapStateToProps = ({ user }) => ({ user });
-
-export default connect(mapStateToProps, { logout, isLoggedIn })(Navbar);
+export default connect(null, { logout, isLoggedIn })(Navbar);

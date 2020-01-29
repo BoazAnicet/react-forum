@@ -13,6 +13,7 @@ const toolbarConfig = {
   INLINE_STYLE_BUTTONS: [
     { label: "Bold", style: "BOLD", className: "custom-css-class" },
     { label: "Italic", style: "ITALIC" },
+    { label: "Strikethrough", style: "STRIKETHROUGH" },
     { label: "Underline", style: "UNDERLINE" }
   ],
   BLOCK_TYPE_DROPDOWN: [
@@ -32,3 +33,28 @@ const Editor = props => {
 };
 
 export default Editor;
+
+// import React, { useState, useRef } from "react";
+// import JoditEditor from "jodit-react";
+
+// const Example = ({}) => {
+//   const editor = useRef(null);
+//   const [content, setContent] = useState("");
+
+//   const config = {
+//     readonly: false // all options from https://xdsoft.net/jodit/doc/
+//   };
+
+//   return (
+//     <JoditEditor
+//       ref={editor}
+//       value={content}
+//       config={config}
+//       tabIndex={1} // tabIndex of textarea
+//       onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+//       onChange={newContent => {}}
+//     />
+//   );
+// };
+
+// export default Example;

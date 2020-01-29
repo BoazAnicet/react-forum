@@ -1,4 +1,4 @@
-import { GET_POST, GET_MANY_POSTS, CREATE_POST } from "./types";
+import { FETCH_POST, FETCH_POSTS, CREATE_POST } from "./types";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:3001/api/v1/posts";
 
@@ -21,7 +21,7 @@ export const getPost = (id, success, fail) => {
       // });
 
       dispatch({
-        type: GET_POST,
+        type: FETCH_POST,
         post: res.data.data.post
       });
       success();
@@ -31,7 +31,7 @@ export const getPost = (id, success, fail) => {
   };
 };
 
-export const getManyPosts = (data, success, fail) => async dispatch => {
+export const fetchPosts = (data, success, fail) => async dispatch => {
   try {
     const res = await axios.get(
       baseUrl,
@@ -40,7 +40,7 @@ export const getManyPosts = (data, success, fail) => async dispatch => {
     );
 
     dispatch({
-      type: GET_MANY_POSTS,
+      type: FETCH_POSTS,
       payload: res.data.data.posts
     });
 

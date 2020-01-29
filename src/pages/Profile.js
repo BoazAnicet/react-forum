@@ -1,30 +1,38 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Container, CircularProgress } from "@material-ui/core";
-import { isLoggedIn } from "../actions";
+import React from "react";
+import { connect, useSelector } from "react-redux";
+import {
+  Container,
+  CircularProgress,
+  Grid,
+  Typography,
+  InputLabel
+} from "@material-ui/core";
 
-class Profile extends Component {
-  //// http://127.0.0.1:3000/profile
-  componentDidMount() {
-    this.props.isLoggedIn(
-      success => {},
-      fail => this.props.history.push("/login")
-    );
-  }
+const Profile = props => {
+  const user = useSelector(state => state.user);
 
-  render() {
-    return this.props.user ? (
-      <Container>
-        <div>{this.props.user.firstName || "firstName"}</div>
-      </Container>
-    ) : (
-      <Container>
-        <CircularProgress>Loading</CircularProgress>
-      </Container>
-    );
-  }
-}
+  return user ? (
+    <Container maxWidth="md">
+      <Grid container>
+        <Grid item xs={12} sm={6}>
+          <InputLabel>First Name</InputLabel>
+          <Typography>{user.firstName || "firstName"}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <InputLabel>Last Name</InputLabel>
+          <Typography>{user.lastName || "lastName"}</Typography>
+        </Grid>
+      </Grid>
+    </Container>
+  ) : (
+    <Container maxWidth={"md"}>
+      <Grid container alignItems="center" justify="center">
+        <Grid item>
+          <CircularProgress>Loading</CircularProgress>
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
 
-const mapStateToProps = ({ user }) => ({ user });
-
-export default connect(mapStateToProps, { isLoggedIn })(Profile);
+export default connect()(Profile);

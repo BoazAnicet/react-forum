@@ -6,8 +6,8 @@ export const GET_ONE_USER = "GET_ONE_USER";
 export const SIGN_UP = "SIGN_UP";
 
 // POSTS
-export const GET_POST = "GET_POST";
-export const GET_MANY_POSTS = "GET_MANY_POSTS";
+export const FETCH_POST = "FETCH_POST";
+export const FETCH_POSTS = "FETCH_POSTS";
 export const CREATE_POST = "CREATE_POST";
 
 // COMMENTS
@@ -17,4 +17,5 @@ export const DELETE_COMMENT = "DELETE_COMMENT";
 
 // THREAD
 export const CREATE_THREAD = "CREATE_THREAD";
-export const GET_THREAD = "GET_THREAD";
+export const FETCH_THREADS = "FETCH_THREADS";
+export const FETCH_THREAD = "FETCH_THREAD";

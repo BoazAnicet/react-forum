@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   FormControl,
@@ -8,14 +8,13 @@ import {
   TextField,
   Grid,
   Button
+  // makeStyles
 } from "@material-ui/core";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { createThread } from "../actions";
 import { createPost } from "../actions/postActions";
-import { isLoggedIn } from "../actions";
 import reactRTE from "react-rte";
 import { RichTextEditor } from "../components";
-// import { useDispatch, useSelector } from "react-redux";
 
 const categories = [
   { key: "technology", text: "Tecnology", value: "technology" },
@@ -29,33 +28,42 @@ const categories = [
   { key: "culture", text: "Culture", value: "culture" }
 ];
 
+// const useStyles = makeStyles(theme => ({
+//   formControl: {
+//     margin: theme.spacing(1),
+//     minWidth: 120
+//   },
+//   selectEmpty: {
+//     marginTop: theme.spacing(2)
+//   }
+// }));
+
 const NewPost = ({ ...props }) => {
+  // const classes = useStyles();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState(reactRTE.createEmptyValue());
   const [category, setCategory] = useState("");
-  // const [creatingThread, setCreatingThread] = useState(false);
+  const user = useSelector(state => state.user);
 
-  useEffect(() => {
-    props.isLoggedIn(
-      success => {},
-      fail => props.history.push("/login")
-    );
+  const inputLabel = React.useRef(null);
+  const [labelWidth, setLabelWidth] = React.useState(0);
+  React.useEffect(() => {
+    setLabelWidth(inputLabel.current.offsetWidth);
   }, []);
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (props.user) {
-      let author = props.user;
+    if (user) {
+      let author = user;
       let content = body.toString("html");
 
       // 1. Create new thread with title, author, date and category
-      // 2. Create new post in thread with author, date, category and body
-
       props.createThread(
         { author, title, category, created: Date.now() },
         success => {
           let id = success;
+          // 2. Create new post in thread with author, date, category and body
           props.createPost(
             {
               author,
@@ -64,7 +72,7 @@ const NewPost = ({ ...props }) => {
               created: Date.now()
             },
             success => props.history.push(`/thread/${id}`),
-            fail => console.log("Error creating post.")
+            fail => {}
           );
         },
         fail => {}
@@ -75,7 +83,7 @@ const NewPost = ({ ...props }) => {
   const onChange = body => setBody(body);
 
   return (
-    <Container>
+    <Container maxWidth="md">
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -85,20 +93,21 @@ const NewPost = ({ ...props }) => {
                 label="Title"
                 onChange={e => setTitle(e.target.value)}
                 value={title}
+                variant="outlined"
                 required
               />
             </FormControl>
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel>Category</InputLabel>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel ref={inputLabel}>Category</InputLabel>
               <Select
-                fullWidth
                 name="category"
                 value={category}
                 onChange={e => setCategory(e.target.value)}
                 required
+                labelWidth={labelWidth}
               >
                 {categories.map(c => (
                   <MenuItem key={c.key} value={c.value}>
@@ -124,10 +133,7 @@ const NewPost = ({ ...props }) => {
   );
 };
 
-const mapStateToProps = ({ user, thread, post }) => ({ user, thread, post });
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   createPost,
-  isLoggedIn,
   createThread
 })(NewPost);

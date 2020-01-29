@@ -3,15 +3,16 @@ import {
   LOGIN,
   LOGOUT,
   IS_LOGGED_IN,
-  GET_POST,
-  GET_MANY_POSTS,
+  FETCH_POST,
+  FETCH_POSTS,
   SIGN_UP,
   CREATE_POST,
   DELETE_COMMENT,
   FETCH_COMMENTS,
   POST_COMMENT,
   CREATE_THREAD,
-  GET_THREAD
+  FETCH_THREADS,
+  FETCH_THREAD
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
@@ -29,7 +30,7 @@ const user = (state = null, { type, user }) => {
 
 const post = (state = null, { type, post }) => {
   switch (type) {
-    case GET_POST:
+    case FETCH_POST:
       return post;
     // case CREATE_POST:
     //   return post;
@@ -40,7 +41,7 @@ const post = (state = null, { type, post }) => {
 
 const posts = (state = [], { type, payload }) => {
   switch (type) {
-    case GET_MANY_POSTS:
+    case FETCH_POSTS:
       return [...payload];
     case CREATE_POST:
       return [...state, payload];
@@ -61,15 +62,33 @@ const comments = (state = [], { type, payload }) => {
   }
 };
 
-const thread = (state = {}, { type, payload }) => {
+const threads = (state = [], { type, payload }) => {
   switch (type) {
     case CREATE_THREAD:
-      return payload;
-    case GET_THREAD:
+      return [...state, payload];
+    case FETCH_THREADS:
       return payload;
     default:
       return state;
   }
 };
 
-export default combineReducers({ user, post, posts, comments, thread });
+const thread = (state = {}, { type, payload }) => {
+  switch (type) {
+    case CREATE_THREAD:
+      return payload;
+    case FETCH_THREAD:
+      return payload;
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({
+  user,
+  post,
+  posts,
+  comments,
+  threads,
+  thread
+});

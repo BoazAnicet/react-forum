@@ -43,7 +43,7 @@ class Topic extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (!this.props.user) this.props.history.push("/login");
-    const { comment, author } = this.state;
+    const { comment } = this.state;
 
     this.props.postComment({
       author: {
@@ -91,21 +91,14 @@ class Topic extends Component {
         </Typography>
         {/* http://127.0.0.1:3000/post/5e222c51c973d8649c956f64 */}
 
-        <Typography
-          variant="body1"
-          style={{
-            whiteSpace: "pre-line"
-            // wordWrap: "break-word",
-            // overflowWrap: "break-word"
-            // wordBreak: "break-word"
-          }}
-        >
+        <Typography variant="body1" style={{ whiteSpace: "pre-line" }}>
           {ReactHtmlParser(
             ReactHtmlParser(this.removeNBSP(this.props.post.body))
           )}
         </Typography>
 
         <Divider></Divider>
+
         <Typography variant="h6">
           {`${this.props.comments.length}`}{" "}
           {this.props.comments.length === 1 ? "Comment" : "Comments"}

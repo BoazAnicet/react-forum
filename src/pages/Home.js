@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { getManyPosts } from "../actions";
-import { Container, Table } from "semantic-ui-react";
+import { fetchPosts } from "../actions";
+import { Table } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-
-///// http://127.0.0.1:3000/profile
+import { Container, CircularProgress } from "@material-ui/core";
 
 const categories = [
   "Technology",
@@ -18,19 +17,16 @@ const categories = [
   "Culture"
 ];
 
-class Home extends Component {
-  state = {
-    loading: true
-  };
-  componentDidMount() {
-    this.props.getManyPosts(
-      { limit: 10 },
-      () => {},
-      () => {}
-    );
-  }
+const Home = props => {
+  const [loading, setLoading] = useState(true);
 
-  renderCategories = () => {
+  // LISTS
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  const renderCategories = () => {
     return categories.map(c => (
       <Table.Row key={c}>
         <Table.Cell>
@@ -40,22 +36,24 @@ class Home extends Component {
     ));
   };
 
-  render() {
-    return (
-      <Container>
+  return (
+    <Container maxWidth="md">
+      {loading ? (
+        <CircularProgress />
+      ) : (
         <Table>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Topics</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>{this.renderCategories()}</Table.Body>
+          <Table.Body>{renderCategories()}</Table.Body>
         </Table>
-      </Container>
-    );
-  }
-}
+      )}
+    </Container>
+  );
+};
 
 const mapStateToProps = ({ posts }) => ({ posts });
 
-export default connect(mapStateToProps, { getManyPosts })(Home);
+export default connect(mapStateToProps, { fetchPosts })(Home);

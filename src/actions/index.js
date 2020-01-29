@@ -1,8 +1,8 @@
 import { LOGIN, LOGOUT, IS_LOGGED_IN } from "./types";
-import { getManyPosts, getPost } from "./postActions";
+import { fetchPosts, getPost } from "./postActions";
 import { signUp } from "./userActions";
 import { deleteComment, fetchComments, postComment } from "./commentActions";
-import { createThread, getThread } from "./threadActions";
+import { createThread, fetchThreads, fetchThread } from "./threadActions";
 import axios from "axios";
 const baseURL = "http://127.0.0.1:3001/api/v1/users";
 
@@ -60,12 +60,13 @@ export const isLoggedIn = (success, fail) => {
 };
 
 export {
-  getManyPosts,
+  fetchPosts,
   getPost,
   signUp,
   deleteComment,
   fetchComments,
   postComment,
   createThread,
-  getThread
+  fetchThreads,
+  fetchThread
 };

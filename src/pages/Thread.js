@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import {
   Container,
   Typography,
   Grid,
   CircularProgress,
   Button,
-  Breadcrumbs,
-  Link
+  Breadcrumbs
 } from "@material-ui/core";
-import { getThread, getManyPosts } from "../actions";
-import { createPost } from "../actions/postActions";
+import { fetchThread } from "../actions";
+import { createPost, fetchPosts } from "../actions/postActions";
 import { RichTextEditor, Post } from "../components";
 import reactRTE from "react-rte";
+import { Link } from "react-router-dom";
 import { capitalize } from "../utils/helperFunctions";
-// import {Link} from 'react-router-dom'
 
-function Thread({
-  getThread,
-  getManyPosts,
-  history,
-  createPost,
-  // thread,
-  ...props
-}) {
+function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
   const [body, setBody] = useState(reactRTE.createEmptyValue());
   const [loading, setLoading] = useState(true);
   const [replying, setReplying] = useState(false);
@@ -33,17 +25,17 @@ function Thread({
   const threadID = props.location.pathname.split("/")[2];
 
   useEffect(() => {
-    getThread(
+    fetchThread(
       threadID,
       success =>
-        getManyPosts(
+        fetchPosts(
           { thread: threadID },
           success => setLoading(false),
-          fail => {}
+          fail => console.log("couldn't get posts")
         ),
       fail => history.push("/error")
     );
-    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderPosts = posts => posts.map(p => <Post key={p._id} post={p} />);
@@ -61,8 +53,8 @@ function Thread({
           thread: thread._id,
           created: Date.now()
         },
-        success => console.log("created post"),
-        fail => console.log("Error creating post.")
+        success => setReplying(false),
+        fail => {}
       );
 
       setBody(reactRTE.createEmptyValue());
@@ -81,10 +73,10 @@ function Thread({
         <Grid container spacing={2}>
           <Grid item>
             <Breadcrumbs aria-label="breadcrumb">
-              <Link color="inherit" href="/forum">
+              <Link color="inherit" to="/forum">
                 Home
               </Link>
-              <Link color="inherit" href={`/forum/${thread.category}`}>
+              <Link color="inherit" to={`/forum/${thread.category}`}>
                 {capitalize(thread.category)}
               </Link>
               <Typography color="textPrimary">
@@ -103,7 +95,6 @@ function Thread({
 
           <Grid item xs={12}>
             {renderPosts(posts)}
-            {/* {renderPosts(props.posts)} */}
           </Grid>
 
           <Grid item>
@@ -159,11 +150,8 @@ function Thread({
   );
 }
 
-const mapStateToProps = ({}) => ({});
-// const mapStateToProps = ({ thread, posts, user }) => ({ thread, posts, user });
-
-export default connect(mapStateToProps, {
-  getThread,
-  getManyPosts,
+export default connect(null, {
+  fetchThread,
+  fetchPosts,
   createPost
 })(Thread);
