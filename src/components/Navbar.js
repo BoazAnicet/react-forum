@@ -39,7 +39,7 @@ const Navbar = props => {
 
   const logout = () => {
     props.logout();
-    history.push("/");
+    // history.push("/");
   };
 
   return (

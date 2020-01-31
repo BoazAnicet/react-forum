@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { fetchPosts } from "../actions";
-import { Table } from "semantic-ui-react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Container, CircularProgress } from "@material-ui/core";
+import {
+  Container,
+  makeStyles,
+  List,
+  ListItem,
+  Typography
+} from "@material-ui/core";
 
 const categories = [
   "Technology",
@@ -17,43 +20,34 @@ const categories = [
   "Culture"
 ];
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
+  }
+}));
+
 const Home = props => {
-  const [loading, setLoading] = useState(true);
-
-  // LISTS
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const classes = useStyles();
 
   const renderCategories = () => {
     return categories.map(c => (
-      <Table.Row key={c}>
-        <Table.Cell>
-          <Link to={`/forum/${c}`}>{c}</Link>
-        </Table.Cell>
-      </Table.Row>
+      <ListItem key={c}>
+        <Link to={`/forum/${c}`}>
+          <Typography>{c}</Typography>
+        </Link>
+      </ListItem>
     ));
   };
 
   return (
     <Container maxWidth="md">
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Topics</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>{renderCategories()}</Table.Body>
-        </Table>
-      )}
+      <div className={classes.root}>
+        <List component="nav">{renderCategories()}</List>
+      </div>
     </Container>
   );
 };
 
-const mapStateToProps = ({ posts }) => ({ posts });
-
-export default connect(mapStateToProps, { fetchPosts })(Home);
+export default Home;

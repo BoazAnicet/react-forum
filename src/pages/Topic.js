@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getPost, fetchComments, postComment } from "../actions";
+import { getPost } from "../actions";
 import moment from "moment";
 import faker from "faker";
 
@@ -27,18 +27,18 @@ class Topic extends Component {
     }
   };
 
-  componentDidMount() {
-    this.props.getPost(
-      this.state.pathname,
-      success =>
-        this.props.fetchComments(
-          { post: this.props.post._id },
-          () => this.setState({ loading: false }),
-          () => {}
-        ),
-      fail => {}
-    );
-  }
+  // componentDidMount() {
+  //   this.props.getPost(
+  //     this.state.pathname,
+  //     success =>
+  //       this.props.fetchComments(
+  //         { post: this.props.post._id },
+  //         () => this.setState({ loading: false }),
+  //         () => {}
+  //       ),
+  //     fail => {}
+  //   );
+  // }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -139,7 +139,5 @@ const mapStateToProps = ({ post, comments, user }) => ({
 });
 
 export default connect(mapStateToProps, {
-  getPost,
-  fetchComments,
-  postComment
+  getPost
 })(Topic);

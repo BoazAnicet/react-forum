@@ -5,7 +5,7 @@ import { Navbar } from "./components";
 
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Topic from "./pages/Topic";
+// import Topic from "./pages/Topic";
 import ErrorPage from "./pages/404";
 import NewThread from "./pages/NewThread";
 import Login from "./pages/Login";
@@ -64,7 +64,7 @@ const App = props => {
           <PrivateRoute exact path="/thread/new" component={NewThread} />
           <Route exact path="/thread/:id" component={Thread} />
           <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/post/:id" component={Topic} />
+          {/* <Route exact path="/post/:id" component={Topic} /> */}
           <Route exact path="/login" component={Login} />
           <Route exact path="/error" component={ErrorPage} />
           <Route path="*">

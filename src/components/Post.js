@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
   Paper,
   Avatar,
@@ -13,6 +13,10 @@ import ReactHtmlParser from "react-html-parser";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
+import { createEditor } from "slate";
+import { Slate, Editable, withReact } from "slate-react";
+import Editor from "../components/Testing";
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginBottom: 10,
@@ -26,8 +30,9 @@ const useStyles = makeStyles(theme => ({
     height: theme.spacing(7)
   },
   date: {
-    color: "#FFF",
-    backgroundColor: "#333",
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.primary.main,
+    // backgroundColor: "#333",
     padding: "5px 0 5px 10px"
   },
   author: { padding: 10 },
@@ -52,6 +57,11 @@ export default props => {
   const user = useSelector(state => state.user);
   const { body, created, author, edited } = props.post;
 
+  const [value, setValue] = useState(body);
+  const editor = useMemo(() => withReact(createEditor()), []);
+
+  const [editing, setEditing] = useState(false);
+
   return (
     <Paper elevation={1} className={classes.paper}>
       <Grid className={classes.date}>
@@ -75,11 +85,13 @@ export default props => {
               {author.firstName}
             </Typography>
           </Grid>
+
           <Grid item>
             <Typography variant="caption">Member</Typography>
           </Grid>
+
           <Grid item>
-            <Avatar src={author.avatar} className={classes.large} />
+            <Avatar src={author.photo} className={classes.large} />
           </Grid>
 
           <Grid item>
@@ -94,13 +106,29 @@ export default props => {
           {/* <Divider orientation="vertical" /> */}
         </Grid>
 
-        <Grid item xs={12} md={10} style={{ padding: 10 }}>
+        <Grid item xs={12} md={10} style={{ padding: 0 }}>
           {/* <Typography color="textSecondary" variant="caption">{`Posted ${moment(
             created
           ).format("LLL")}`}</Typography> */}
-          <div className={classes.text}>
+
+          {/* <div className={classes.text}>
             {ReactHtmlParser(ReactHtmlParser(body))}
-          </div>
+          </div> */}
+
+          <Editor
+            editor={editor}
+            value={body}
+            onChange={value => setValue(value)}
+            readOnly={!editing}
+          />
+
+          {/* <Slate
+            editor={editor}
+            value={body}
+            onChange={value => setValue(value)}
+          >
+            <Editable readOnly placeholder="Enter some plain text..." />
+          </Slate> */}
 
           {edited ? (
             <Typography variant="caption">
@@ -122,7 +150,11 @@ export default props => {
           {user ? (
             author._id === user._id ? (
               <>
-                <Grid item className={classes.icons}>
+                <Grid
+                  item
+                  className={classes.icons}
+                  onClick={() => setEditing(!editing)}
+                >
                   <SvgIcon>
                     <Edit width={18} />
                   </SvgIcon>

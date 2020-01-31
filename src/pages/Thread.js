@@ -10,19 +10,25 @@ import {
 } from "@material-ui/core";
 import { fetchThread } from "../actions";
 import { createPost, fetchPosts } from "../actions/postActions";
-import { RichTextEditor, Post } from "../components";
-import reactRTE from "react-rte";
+import { Post } from "../components";
 import { Link } from "react-router-dom";
 import { capitalize } from "../utils/helperFunctions";
+import Editor from "../components/Testing";
 
 function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
-  const [body, setBody] = useState(reactRTE.createEmptyValue());
   const [loading, setLoading] = useState(true);
   const [replying, setReplying] = useState(false);
   const user = useSelector(state => state.user);
   const thread = useSelector(state => state.thread);
   const posts = useSelector(state => state.posts);
   const threadID = props.location.pathname.split("/")[2];
+
+  const [value, setValue] = useState([
+    {
+      type: "paragraph",
+      children: [{ text: "" }]
+    }
+  ]);
 
   useEffect(() => {
     fetchThread(
@@ -40,8 +46,6 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
 
   const renderPosts = posts => posts.map(p => <Post key={p._id} post={p} />);
 
-  const onChange = body => setBody(body);
-
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -49,15 +53,28 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
       createPost(
         {
           author: user,
-          body: body.toString("html"),
+          body: value,
           thread: thread._id,
           created: Date.now()
         },
-        success => setReplying(false),
+        success => {
+          setReplying(false);
+          setValue([
+            {
+              type: "paragraph",
+              children: [{ text: "" }]
+            }
+          ]);
+        },
         fail => {}
       );
 
-      setBody(reactRTE.createEmptyValue());
+      // setValue([
+      //   {
+      //     type: "paragraph",
+      //     children: [{ text: "" }]
+      //   }
+      // ]);
     } else {
       history.push("/login");
     }
@@ -112,11 +129,7 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <RichTextEditor
-                      name="body"
-                      value={body}
-                      onChange={onChange}
-                    />
+                    <Editor value={value} onChange={value => setValue(value)} />
                   </Grid>
 
                   <Grid container item xs={12} spacing={1}>
@@ -128,7 +141,12 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
                     <Grid item>
                       <Button
                         onClick={() => {
-                          setBody(reactRTE.createEmptyValue());
+                          setValue([
+                            {
+                              type: "paragraph",
+                              children: [{ text: "" }]
+                            }
+                          ]);
                           setReplying(false);
                         }}
                         color="primary"
