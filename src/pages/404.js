@@ -1,6 +1,5 @@
 import React from "react";
-import { Container } from "styled-bootstrap-grid";
-import { Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 
 export default () => (
   <Container>

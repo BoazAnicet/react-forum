@@ -1,6 +1,7 @@
+import Editor from "./Editor";
+import Footer from "./Footer";
 import Navbar from "./Navbar";
-import SidePanel from "./SidePanel";
 import Post from "./Post";
-import RichTextEditor from "./RichTextEditor";
+import Table from "./Table";
 
-export { Navbar, SidePanel, Post, RichTextEditor };
+export { Editor, Footer, Navbar, Post, Table };

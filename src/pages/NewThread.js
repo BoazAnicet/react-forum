@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   Container,
   FormControl,
@@ -9,85 +9,20 @@ import {
   Grid,
   Button,
   Typography
-  // makeStyles
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { createThread } from "../actions";
 import { createPost } from "../actions/postActions";
-
-import Editor from "../components/Testing";
-import { withReact } from "slate-react";
-import { createEditor } from "slate";
+import Editor from "../components/Editor";
 
 const categories = [
-  { key: "technology", text: "Tecnology", value: "technology" },
-  { key: "finance", text: "Finance", value: "finance" },
-  { key: "travel", text: "Travel", value: "travel" },
-  { key: "health", text: "Health", value: "health" },
-  { key: "design", text: "Design", value: "design" },
-  { key: "entertainment", text: "Entertainment", value: "entertainment" },
-  { key: "politics", text: "Politics", value: "politics" },
-  { key: "style", text: "Style", value: "style" },
-  { key: "culture", text: "Culture", value: "culture" }
+  { key: "general", text: "General", value: "general" },
+  { key: "html", text: "HTML", value: "html" },
+  { key: "css", text: "CSS", value: "css" },
+  { key: "javascript", text: "JavaScript", value: "javascript" }
 ];
 
-// const useStyles = makeStyles(theme => ({
-//   formControl: {
-//     margin: theme.spacing(1),
-//     minWidth: 120
-//   },
-//   selectEmpty: {
-//     marginTop: theme.spacing(2)
-//   }
-// }));
-
-// let body = [
-//   {
-//     type: "paragraph",
-//     children: [
-//       {
-//         text: "12345"
-//       },
-//       {
-//         text: "12345",
-//         italic: true
-//       }
-//     ]
-//   },
-//   {
-//     type: "paragraph",
-//     children: [
-//       {
-//         text: "12345"
-//       },
-//       {
-//         text: "12345",
-//         bold: true
-//       },
-//       {
-//         text: "12345",
-//         bold: true,
-//         underline: true,
-//         italic: true
-//       }
-//     ]
-//   }
-// ];
-
-// let bodyLength = body.reduce((acc, val, index) => {
-//   console.log(val.children);
-//   let n = 0;
-//   for (let i = 0; i < val.children.length; i++) {
-//     n += val.children[i].text.length;
-//   }
-
-//   return acc + n;
-// }, 0);
-
-// const count = value.text.count
-
-const NewPost = ({ ...props }) => {
-  // const classes = useStyles();
+export default ({ ...props }) => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const user = useSelector(state => state.user);
@@ -109,8 +44,6 @@ const NewPost = ({ ...props }) => {
 
     return acc + n;
   }, 0);
-
-  const editor = useMemo(() => withReact(createEditor()), []);
 
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -165,39 +98,6 @@ const NewPost = ({ ...props }) => {
           )
         );
       }
-
-      // if (postLength >= 10) {
-
-      // let author = user;
-      // let content = body.toString("html");
-
-      // // 1. Create new thread with title, author, date and category
-      // dispatch(
-      //   createThread(
-      //     { author, title, category, created: Date.now() },
-      //     success => {
-      //       let id = success;
-      //       // 2. Create new post in thread with author, date, category and body
-      //       dispatch(
-      //         createPost(
-      //           {
-      //             author,
-      //             body: value,
-      //             thread: id,
-      //             created: Date.now()
-      //           },
-      //           success => props.history.push(`/thread/${id}`),
-      //           fail => {}
-      //         )
-      //       );
-      //     },
-      //     fail => {}
-      //   )
-      // );
-
-      // } else {
-      //   setErrors({ ...errors, postLength: "10 characters" });
-      // }
     }
   };
 
@@ -253,5 +153,3 @@ const NewPost = ({ ...props }) => {
     </Container>
   );
 };
-
-export default NewPost;

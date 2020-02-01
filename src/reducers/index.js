@@ -7,9 +7,6 @@ import {
   FETCH_POSTS,
   SIGN_UP,
   CREATE_POST,
-  DELETE_COMMENT,
-  FETCH_COMMENTS,
-  POST_COMMENT,
   CREATE_THREAD,
   FETCH_THREADS,
   FETCH_THREAD
@@ -50,18 +47,6 @@ const posts = (state = [], { type, payload }) => {
   }
 };
 
-const comments = (state = [], { type, payload }) => {
-  switch (type) {
-    case FETCH_COMMENTS:
-      return [...payload];
-    case DELETE_COMMENT:
-    case POST_COMMENT:
-      return [...state, payload];
-    default:
-      return state;
-  }
-};
-
 const threads = (state = [], { type, payload }) => {
   switch (type) {
     case CREATE_THREAD:
@@ -88,7 +73,6 @@ export default combineReducers({
   user,
   post,
   posts,
-  comments,
   threads,
   thread
 });

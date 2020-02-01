@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Container,
   Typography,
@@ -10,18 +10,19 @@ import {
 } from "@material-ui/core";
 import { fetchThread } from "../actions";
 import { createPost, fetchPosts } from "../actions/postActions";
-import { Post } from "../components";
-import { Link } from "react-router-dom";
+import { Post, Editor } from "../components";
+import { Link, useHistory } from "react-router-dom";
 import { capitalize } from "../utils/helperFunctions";
-import Editor from "../components/Testing";
 
-function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
+export default ({ location, ...props }) => {
   const [loading, setLoading] = useState(true);
   const [replying, setReplying] = useState(false);
   const user = useSelector(state => state.user);
   const thread = useSelector(state => state.thread);
   const posts = useSelector(state => state.posts);
-  const threadID = props.location.pathname.split("/")[2];
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const threadID = location.pathname.split("/")[2];
 
   const [value, setValue] = useState([
     {
@@ -31,15 +32,19 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
   ]);
 
   useEffect(() => {
-    fetchThread(
-      threadID,
-      success =>
-        fetchPosts(
-          { thread: threadID },
-          success => setLoading(false),
-          fail => console.log("couldn't get posts")
-        ),
-      fail => history.push("/error")
+    dispatch(
+      fetchThread(
+        threadID,
+        success =>
+          dispatch(
+            fetchPosts(
+              { thread: threadID },
+              success => setLoading(false),
+              fail => {}
+            )
+          ),
+        fail => history.push("/error")
+      )
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -50,37 +55,30 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
     e.preventDefault();
 
     if (user) {
-      createPost(
-        {
-          author: user,
-          body: value,
-          thread: thread._id,
-          created: Date.now()
-        },
-        success => {
-          setReplying(false);
-          setValue([
-            {
-              type: "paragraph",
-              children: [{ text: "" }]
-            }
-          ]);
-        },
-        fail => {}
+      dispatch(
+        createPost(
+          {
+            author: user,
+            body: value,
+            thread: thread._id,
+            created: Date.now()
+          },
+          success => {
+            setReplying(false);
+            setValue([
+              {
+                type: "paragraph",
+                children: [{ text: "" }]
+              }
+            ]);
+          },
+          fail => {}
+        )
       );
-
-      // setValue([
-      //   {
-      //     type: "paragraph",
-      //     children: [{ text: "" }]
-      //   }
-      // ]);
     } else {
       history.push("/login");
     }
   };
-
-  // http://127.0.0.1:3000/thread/5e2fc0fb8f15d95c24e0e166
 
   return (
     <Container maxWidth={"md"}>
@@ -90,12 +88,15 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
         <Grid container spacing={2}>
           <Grid item>
             <Breadcrumbs aria-label="breadcrumb">
-              <Link color="inherit" to="/forum">
+              <Link color="inherit" to="/">
                 Home
               </Link>
-              <Link color="inherit" to={`/forum/${thread.category}`}>
+              {/* <Link color="inherit" to={`/forums/${thread.category}`}>
                 {capitalize(thread.category)}
-              </Link>
+              </Link> */}
+              <Typography color="textPrimary">
+                {capitalize(thread.category)}
+              </Typography>
               <Typography color="textPrimary">
                 {capitalize(thread.title)}
               </Typography>
@@ -166,10 +167,4 @@ function Thread({ fetchThread, fetchPosts, history, createPost, ...props }) {
       )}
     </Container>
   );
-}
-
-export default connect(null, {
-  fetchThread,
-  fetchPosts,
-  createPost
-})(Thread);
+};

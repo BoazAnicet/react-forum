@@ -9,17 +9,6 @@ export const getPost = (id, success, fail) => {
         withCredentials: true
       });
 
-      // ({
-      //   method: "GET",
-      //   url: `${baseUrl}/${id}`,
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Credentials": true
-      //   },
-      //   withCredentials: true
-      // });
-
       dispatch({
         type: FETCH_POST,
         post: res.data.data.post

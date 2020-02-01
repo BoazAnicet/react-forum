@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, useSlate, Slate } from "slate-react";
 import { Editor, Transforms, createEditor } from "slate";
@@ -34,13 +34,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default props => {
-  // const [value, setValue] = useState(initialValue);
-  const [value, setValue] = useState([
-    {
-      type: "paragraph",
-      children: [{ text: "" }]
-    }
-  ]);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);

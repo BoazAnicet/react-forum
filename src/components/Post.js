@@ -9,13 +9,11 @@ import {
   SvgIcon
 } from "@material-ui/core";
 import { Reply, FormatQuote, Report, Edit, Delete } from "@material-ui/icons";
-import ReactHtmlParser from "react-html-parser";
 import moment from "moment";
 import { useSelector } from "react-redux";
-
 import { createEditor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
-import Editor from "../components/Testing";
+import Editor from "../components/Editor";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   date: {
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
-    // backgroundColor: "#333",
     padding: "5px 0 5px 10px"
   },
   author: { padding: 10 },
@@ -86,12 +83,16 @@ export default props => {
             </Typography>
           </Grid>
 
-          <Grid item>
+          {/* <Grid item>
             <Typography variant="caption">Member</Typography>
-          </Grid>
+          </Grid> */}
 
           <Grid item>
-            <Avatar src={author.photo} className={classes.large} />
+            <Avatar
+              src={author.photo}
+              className={classes.large}
+              alt={author.firstName}
+            />
           </Grid>
 
           <Grid item>
@@ -100,9 +101,9 @@ export default props => {
             ).fromNow()}`}</Typography>
           </Grid>
 
-          <Grid item>
+          {/* <Grid item>
             <Typography variant="caption">{`Posts: ${"99"}`}</Typography>
-          </Grid>
+          </Grid> */}
           {/* <Divider orientation="vertical" /> */}
         </Grid>
 
