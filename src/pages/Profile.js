@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Container,
   CircularProgress,
@@ -8,7 +8,7 @@ import {
   InputLabel
 } from "@material-ui/core";
 
-const Profile = props => {
+export default props => {
   const user = useSelector(state => state.user);
 
   return user ? (
@@ -34,5 +34,3 @@ const Profile = props => {
     </Container>
   );
 };
-
-export default connect()(Profile);

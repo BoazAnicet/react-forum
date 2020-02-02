@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Breadcrumbs, Typography } from "@material-ui/core";
+import {
+  Grid,
+  Breadcrumbs,
+  Typography,
+  Container,
+  CircularProgress
+} from "@material-ui/core";
 import { capitalize } from "../utils/helperFunctions";
 import { Link } from "react-router-dom";
 import Table from "../components/Table";
 import { fetchThreads } from "../actions";
-import { Container, CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function(props) {
+export default props => {
   const category = props.match.url.split("/")[2].toLowerCase();
   const [loading, setLoading] = useState(true);
   const threads = useSelector(state => state.threads);
@@ -46,4 +51,4 @@ export default function(props) {
       )}
     </Container>
   );
-}
+};

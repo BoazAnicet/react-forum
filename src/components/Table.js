@@ -14,7 +14,10 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
+import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import { capitalize } from "../utils/helperFunctions";
 
 const useStyles1 = makeStyles(theme => ({
   root: {
@@ -120,6 +123,17 @@ export default function({ threads, ...props }) {
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
         <TableBody>
+          <TableRow>
+            <TableCell component="th" scope="row">
+              <Typography>Thread</Typography>
+            </TableCell>
+            <TableCell align="right" component="th" scope="row">
+              <Typography>Views / Replies</Typography>
+            </TableCell>
+            <TableCell align="right" component="th" scope="row">
+              <Typography>Last Post By</Typography>
+            </TableCell>
+          </TableRow>
           {(rowsPerPage > 0
             ? threads.slice(
                 page * rowsPerPage,
@@ -130,12 +144,19 @@ export default function({ threads, ...props }) {
             <TableRow key={thread._id}>
               <TableCell component="th" scope="row">
                 <Link to={`/thread/${thread._id}`}>{thread.title}</Link>
+                {/* <Typography>{thread.author.firstName}</Typography> */}
               </TableCell>
               <TableCell align="right">
-                {"Adam"}
-                {/* {thread.author.firstName || "Adam"} */}
+                <Typography>{`Views: ${thread.views}`}</Typography>
+                <Typography>{`Replies: ${thread.replies}`}</Typography>
               </TableCell>
-              <TableCell align="right">{thread.created}</TableCell>
+              <TableCell align="right">
+                <Typography>{capitalize(thread.lastPost.author)}</Typography>
+                <Typography>
+                  {moment(thread.lastPost.date).format("MMM. Do, YYYY")}
+                </Typography>
+                {/* {moment(thread.created).format("MMM. Do, YYYY")} */}
+              </TableCell>
             </TableRow>
           ))}
           {emptyRows > 0 && (

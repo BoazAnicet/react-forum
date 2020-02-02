@@ -11,8 +11,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { createThread } from "../actions";
-import { createPost } from "../actions/postActions";
+import { updateMe, createPost, createThread } from "../actions";
 import Editor from "../components/Editor";
 
 const categories = [
@@ -36,7 +35,7 @@ export default ({ ...props }) => {
   ]);
 
   let postLength = value.reduce((acc, val, index) => {
-    // need to clear spaces to get better count
+    // need to clear spaces to get better count?
     let n = 0;
     for (let i = 0; i < val.children.length; i++) {
       n += val.children[i].text.length;
@@ -72,12 +71,24 @@ export default ({ ...props }) => {
           titleLength: "The title must be at least 10 characters"
         });
       } else {
-        let author = user;
+        let author = {
+          joinDate: user.joinDate,
+          firstName: user.firstName,
+          photo: user.photo,
+          postCount: user.postCount,
+          _id: user._id
+        };
 
         // 1. Create new thread with title, author, date and category
         dispatch(
           createThread(
-            { author, title, category, created: Date.now() },
+            {
+              author,
+              title,
+              category,
+              created: Date.now(),
+              lastPost: { author: user.firstName, date: Date.now() }
+            },
             success => {
               let id = success;
               // 2. Create new post in thread with author, date, category and body
@@ -89,7 +100,15 @@ export default ({ ...props }) => {
                     thread: id,
                     created: Date.now()
                   },
-                  success => props.history.push(`/thread/${id}`),
+                  success =>
+                    dispatch(
+                      updateMe(
+                        { postCount: user.postCount + 1 },
+                        success => props.history.push(`/thread/${id}`),
+                        fail => {}
+                      )
+                    ),
+                  // success => props.history.push(`/thread/${id}`),
                   fail => {}
                 )
               );

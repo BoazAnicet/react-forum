@@ -1,26 +1,11 @@
-import { FETCH_POST, FETCH_POSTS, CREATE_POST } from "./types";
+import { FETCH_POSTS, CREATE_POST } from "./types";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:3001/api/v1/posts";
 
-export const getPost = (id, success, fail) => {
-  return async dispatch => {
-    try {
-      const res = await axios.get(baseUrl + "/" + id, {
-        withCredentials: true
-      });
-
-      dispatch({
-        type: FETCH_POST,
-        post: res.data.data.post
-      });
-      success();
-    } catch (error) {
-      fail();
-    }
-  };
-};
-
 export const fetchPosts = (data, success, fail) => async dispatch => {
+  success = typeof success !== "undefined" ? success : () => {};
+  fail = typeof fail !== "undefined" ? fail : () => {};
+
   try {
     const res = await axios.get(
       baseUrl,
@@ -39,24 +24,24 @@ export const fetchPosts = (data, success, fail) => async dispatch => {
   }
 };
 
-export const createPost = (data, success, fail) => {
-  return async dispatch => {
-    try {
-      const res = await axios.post(
-        `${baseUrl}`,
-        { ...data },
-        { withCredentials: true }
-      );
+export const createPost = (data, success, fail) => async dispatch => {
+  success = typeof success !== "undefined" ? success : () => {};
+  fail = typeof fail !== "undefined" ? fail : () => {};
 
-      dispatch({
-        type: CREATE_POST,
-        payload: res.data.data.post
-      });
+  try {
+    const res = await axios.post(
+      `${baseUrl}`,
+      { ...data },
+      { withCredentials: true }
+    );
 
-      success();
-    } catch (error) {
-      console.log(error.message);
-      fail();
-    }
-  };
+    dispatch({
+      type: CREATE_POST,
+      payload: res.data.data.post
+    });
+
+    success();
+  } catch (error) {
+    fail();
+  }
 };

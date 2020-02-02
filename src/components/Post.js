@@ -12,7 +12,7 @@ import { Reply, FormatQuote, Report, Edit, Delete } from "@material-ui/icons";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { createEditor } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import { withReact } from "slate-react";
 import Editor from "../components/Editor";
 
 const useStyles = makeStyles(theme => ({
@@ -53,10 +53,8 @@ export default props => {
   const classes = useStyles();
   const user = useSelector(state => state.user);
   const { body, created, author, edited } = props.post;
-
   const [value, setValue] = useState(body);
   const editor = useMemo(() => withReact(createEditor()), []);
-
   const [editing, setEditing] = useState(false);
 
   return (
@@ -102,34 +100,17 @@ export default props => {
           </Grid>
 
           {/* <Grid item>
-            <Typography variant="caption">{`Posts: ${"99"}`}</Typography>
+            <Typography variant="caption">{`Posts: ${author.postCount}`}</Typography>
           </Grid> */}
-          {/* <Divider orientation="vertical" /> */}
         </Grid>
 
         <Grid item xs={12} md={10} style={{ padding: 0 }}>
-          {/* <Typography color="textSecondary" variant="caption">{`Posted ${moment(
-            created
-          ).format("LLL")}`}</Typography> */}
-
-          {/* <div className={classes.text}>
-            {ReactHtmlParser(ReactHtmlParser(body))}
-          </div> */}
-
           <Editor
             editor={editor}
-            value={body}
+            value={value}
             onChange={value => setValue(value)}
             readOnly={!editing}
           />
-
-          {/* <Slate
-            editor={editor}
-            value={body}
-            onChange={value => setValue(value)}
-          >
-            <Editable readOnly placeholder="Enter some plain text..." />
-          </Slate> */}
 
           {edited ? (
             <Typography variant="caption">

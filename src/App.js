@@ -12,7 +12,7 @@ import SignUp from "./pages/SignUp";
 import Category from "./pages/Category";
 import { useSelector, useDispatch } from "react-redux";
 import { isLoggedIn } from "./actions";
-import { CircularProgress, CssBaseline } from "@material-ui/core";
+import { CircularProgress, CssBaseline, Container } from "@material-ui/core";
 
 export default props => {
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,9 @@ export default props => {
       <CssBaseline />
       <Navbar />
       {loading ? (
-        <CircularProgress />
+        <Container>
+          <CircularProgress />
+        </Container>
       ) : (
         <Switch>
           <Route exact path="/">
@@ -53,9 +55,7 @@ export default props => {
           </Route>
           <Route exact path="/forums" component={Home} />
           <Route exact path="/forums/:category" component={Category} />
-          {/* <Route exact path="/profile" component={Profile} /> */}
           <PrivateRoute exact path="/profile" component={Profile} />
-          {/* <Route exact path="/thread/new" component={NewThread} /> */}
           <PrivateRoute exact path="/thread/new" component={NewThread} />
           <Route exact path="/thread/:id" component={Thread} />
           <Route exact path="/signup" component={SignUp} />

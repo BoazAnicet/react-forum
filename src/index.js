@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -9,8 +8,9 @@ import { createStore, applyMiddleware, compose } from "redux";
 import reducer from "./reducers";
 import thunk from "redux-thunk";
 
-// import "semantic-ui-css/semantic.min.css";
-
+// PRODUCTION
+// const composeEnhancers = compose;
+// DEVELOPMENT
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));

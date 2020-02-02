@@ -3,13 +3,14 @@ import {
   LOGIN,
   LOGOUT,
   IS_LOGGED_IN,
-  FETCH_POST,
   FETCH_POSTS,
   SIGN_UP,
   CREATE_POST,
   CREATE_THREAD,
   FETCH_THREADS,
-  FETCH_THREAD
+  FETCH_THREAD,
+  UPDATE_ME,
+  UPDATE_THREAD
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
@@ -18,19 +19,10 @@ const user = (state = null, { type, user }) => {
     case IS_LOGGED_IN:
     case SIGN_UP:
       return { ...state, ...user };
+    case UPDATE_ME:
+      return user;
     case LOGOUT:
       return null;
-    default:
-      return state;
-  }
-};
-
-const post = (state = null, { type, post }) => {
-  switch (type) {
-    case FETCH_POST:
-      return post;
-    // case CREATE_POST:
-    //   return post;
     default:
       return state;
   }
@@ -47,6 +39,19 @@ const posts = (state = [], { type, payload }) => {
   }
 };
 
+const thread = (state = {}, { type, payload }) => {
+  switch (type) {
+    case CREATE_THREAD:
+      return payload;
+    case FETCH_THREAD:
+      return payload;
+    case UPDATE_THREAD:
+      return state;
+    default:
+      return state;
+  }
+};
+
 const threads = (state = [], { type, payload }) => {
   switch (type) {
     case CREATE_THREAD:
@@ -58,20 +63,8 @@ const threads = (state = [], { type, payload }) => {
   }
 };
 
-const thread = (state = {}, { type, payload }) => {
-  switch (type) {
-    case CREATE_THREAD:
-      return payload;
-    case FETCH_THREAD:
-      return payload;
-    default:
-      return state;
-  }
-};
-
 export default combineReducers({
   user,
-  post,
   posts,
   threads,
   thread

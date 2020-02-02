@@ -8,8 +8,7 @@ import {
   Button,
   Breadcrumbs
 } from "@material-ui/core";
-import { fetchThread } from "../actions";
-import { createPost, fetchPosts } from "../actions/postActions";
+import { fetchThread, updateThread, createPost, fetchPosts } from "../actions";
 import { Post, Editor } from "../components";
 import { Link, useHistory } from "react-router-dom";
 import { capitalize } from "../utils/helperFunctions";
@@ -35,19 +34,31 @@ export default ({ location, ...props }) => {
     dispatch(
       fetchThread(
         threadID,
-        success =>
+        success => {
           dispatch(
-            fetchPosts(
-              { thread: threadID },
-              success => setLoading(false),
-              fail => {}
-            )
-          ),
+            fetchPosts({ thread: threadID }, success => {
+              setLoading(false);
+            })
+          );
+        },
         fail => history.push("/error")
       )
     );
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    dispatch(
+      updateThread(
+        { id: threadID, body: { views: thread.views + 1 } },
+        () => {},
+        () => {}
+      )
+    );
+    return () => {};
+    // eslint-disable-next-line
+  }, [thread]);
 
   const renderPosts = posts => posts.map(p => <Post key={p._id} post={p} />);
 
@@ -55,15 +66,31 @@ export default ({ location, ...props }) => {
     e.preventDefault();
 
     if (user) {
+      let author = {
+        joinDate: user.joinDate,
+        firstName: user.firstName,
+        photo: user.photo,
+        postCount: user.postCount,
+        _id: user._id
+      };
       dispatch(
         createPost(
           {
-            author: user,
+            author,
             body: value,
             thread: thread._id,
             created: Date.now()
           },
           success => {
+            dispatch(
+              updateThread({
+                id: threadID,
+                body: {
+                  replies: thread.replies + 1,
+                  lastPost: { author: user.firstName, date: Date.now() }
+                }
+              })
+            );
             setReplying(false);
             setValue([
               {
