@@ -99,10 +99,13 @@ TablePaginationActions.propTypes = {
 const useStyles2 = makeStyles({
   table: {
     minWidth: 500
+  },
+  link: {
+    textDecoration: "none"
   }
 });
 
-export default function({ threads, ...props }) {
+export default function({ threads, count, ...props }) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -143,7 +146,9 @@ export default function({ threads, ...props }) {
           ).map(thread => (
             <TableRow key={thread._id}>
               <TableCell component="th" scope="row">
-                <Link to={`/thread/${thread._id}`}>{thread.title}</Link>
+                <Link className={classes.link} to={`/thread/${thread._id}`}>
+                  {thread.title}
+                </Link>
                 {/* <Typography>{thread.author.firstName}</Typography> */}
               </TableCell>
               <TableCell align="right">
@@ -151,7 +156,14 @@ export default function({ threads, ...props }) {
                 <Typography>{`Replies: ${thread.replies}`}</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography>{capitalize(thread.lastPost.author)}</Typography>
+                <Link
+                  className={classes.link}
+                  to={`/profile/${thread.lastPost.author._id}`}
+                >
+                  <Typography>
+                    {capitalize(thread.lastPost.author.username)}
+                  </Typography>
+                </Link>
                 <Typography>
                   {moment(thread.lastPost.date).format("MMM. Do, YYYY")}
                 </Typography>
@@ -171,6 +183,7 @@ export default function({ threads, ...props }) {
               rowsPerPageOptions={[10, 15, 20]}
               // rowsPerPageOptions={[5, 15, 25, { label: "All", value: -1 }]}
               colSpan={3}
+              // count={count}
               count={threads.length}
               rowsPerPage={rowsPerPage}
               // rowsPerPage={rowsPerPage}

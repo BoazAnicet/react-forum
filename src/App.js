@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Thread from "./pages/Thread";
 import SignUp from "./pages/SignUp";
 import Category from "./pages/Category";
+import Settings from "./pages/Settings";
 import { useSelector, useDispatch } from "react-redux";
 import { isLoggedIn } from "./actions";
 import { CircularProgress, CssBaseline, Container } from "@material-ui/core";
@@ -55,12 +56,13 @@ export default props => {
           </Route>
           <Route exact path="/forums" component={Home} />
           <Route exact path="/forums/:category" component={Category} />
-          <PrivateRoute exact path="/profile" component={Profile} />
+          <Route exact path="/profile/:id" component={Profile} />
           <PrivateRoute exact path="/thread/new" component={NewThread} />
           <Route exact path="/thread/:id" component={Thread} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/error" component={ErrorPage} />
+          <Route exact path="/settings" component={Settings} />
           <Route path="*">
             <Redirect to="/error" />
           </Route>

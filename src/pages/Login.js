@@ -1,11 +1,4 @@
-// import React, { useState } from "react";
-// import { connect, useSelector } from "react-redux";
-// import { login } from "../actions";
-// import { Form, Segment } from "semantic-ui-react";
-// import { Container, Grid, TextField, Button } from "@material-ui/core";
-// import { useHistory } from "react-router-dom";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -20,7 +13,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { login } from "../actions";
 
@@ -54,22 +47,42 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  error: {
+    color: theme.palette.error
   }
 }));
 
 export default function Login(props) {
-  const [email, setEmail] = useState("Adam@pontepiefarms.com");
-  const [password, setPassword] = useState("password");
-  // const user = useSelector(state => state.user);
+  // document.title = "Login";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("Adam@pontepiefarms.com");
+  // const [password, setPassword] = useState("password");
+  const user = useSelector(state => state.user);
+  const [errors, setErrors] = useState({ login: "" });
   const history = useHistory();
   const dispatch = useDispatch();
-
-  document.title = "Login";
   const classes = useStyles();
+
+  useEffect(() => {
+    if (user) {
+      history.push("/");
+    }
+    return () => {};
+  }, [history, user]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(login({ email, password }, () => history.push("/")));
+    dispatch(
+      login(
+        { email, password },
+        success => history.push("/"),
+        fail => {
+          return setErrors({ login: "Invalid username/password." });
+        }
+      )
+    );
   };
 
   return (
@@ -82,6 +95,7 @@ export default function Login(props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        <Typography className={classes.error}>{errors.login}</Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"

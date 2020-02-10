@@ -2,7 +2,8 @@ import {
   CREATE_THREAD,
   FETCH_THREADS,
   FETCH_THREAD,
-  UPDATE_THREAD
+  UPDATE_THREAD,
+  FETCH_PAGED_THREADS
 } from "./types";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:3001/api/v1/threads";
@@ -85,6 +86,27 @@ export const updateThread = (thread, success, fail) => async dispatch => {
     dispatch({
       type: UPDATE_THREAD,
       thread: res.data.thread
+    });
+
+    success();
+  } catch (error) {
+    fail();
+  }
+};
+
+export const fetchPagedThreads = (req, success, fail) => async dispatch => {
+  success = typeof success !== "undefined" ? success : () => {};
+  fail = typeof fail !== "undefined" ? fail : () => {};
+
+  try {
+    const res = await axios.get(`${baseUrl}/paged-threads`, {
+      params: { ...req },
+      withCredentials: true
+    });
+
+    dispatch({
+      type: FETCH_PAGED_THREADS,
+      payload: res.data.threads[0]
     });
 
     success();

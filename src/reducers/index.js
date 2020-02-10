@@ -10,7 +10,10 @@ import {
   FETCH_THREADS,
   FETCH_THREAD,
   UPDATE_ME,
-  UPDATE_THREAD
+  UPDATE_THREAD,
+  FETCH_PAGED_THREADS,
+  FETCH_PROFILE,
+  DELETE_ME
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
@@ -18,9 +21,9 @@ const user = (state = null, { type, user }) => {
     case LOGIN:
     case IS_LOGGED_IN:
     case SIGN_UP:
-      return { ...state, ...user };
     case UPDATE_ME:
       return user;
+    case DELETE_ME:
     case LOGOUT:
       return null;
     default:
@@ -58,6 +61,17 @@ const threads = (state = [], { type, payload }) => {
       return [...state, payload];
     case FETCH_THREADS:
       return payload;
+    case FETCH_PAGED_THREADS:
+      return payload;
+    default:
+      return state;
+  }
+};
+
+const profile = (state = {}, { type, payload }) => {
+  switch (type) {
+    case FETCH_PROFILE:
+      return payload;
     default:
       return state;
   }
@@ -67,5 +81,6 @@ export default combineReducers({
   user,
   posts,
   threads,
-  thread
+  thread,
+  profile
 });

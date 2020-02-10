@@ -79,7 +79,6 @@ export default ({ ...props }) => {
           _id: user._id
         };
 
-        // 1. Create new thread with title, author, date and category
         dispatch(
           createThread(
             {
@@ -87,11 +86,13 @@ export default ({ ...props }) => {
               title,
               category,
               created: Date.now(),
-              lastPost: { author: user.firstName, date: Date.now() }
+              lastPost: {
+                author: { _id: user._id, username: user.username },
+                date: Date.now()
+              }
             },
             success => {
               let id = success;
-              // 2. Create new post in thread with author, date, category and body
               dispatch(
                 createPost(
                   {
@@ -102,18 +103,13 @@ export default ({ ...props }) => {
                   },
                   success =>
                     dispatch(
-                      updateMe(
-                        { postCount: user.postCount + 1 },
-                        success => props.history.push(`/thread/${id}`),
-                        fail => {}
+                      updateMe({ postCount: user.postCount + 1 }, success =>
+                        props.history.push(`/thread/${id}`)
                       )
-                    ),
-                  // success => props.history.push(`/thread/${id}`),
-                  fail => {}
+                    )
                 )
               );
-            },
-            fail => {}
+            }
           )
         );
       }

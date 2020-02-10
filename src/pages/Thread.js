@@ -49,13 +49,7 @@ export default ({ location, ...props }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(
-      updateThread(
-        { id: threadID, body: { views: thread.views + 1 } },
-        () => {},
-        () => {}
-      )
-    );
+    dispatch(updateThread({ id: threadID, body: { views: thread.views + 1 } }));
     return () => {};
     // eslint-disable-next-line
   }, [thread]);

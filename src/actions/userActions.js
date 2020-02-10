@@ -47,3 +47,5 @@ export const updateMe = (body, success, fail) => async dispatch => {
     fail();
   }
 };
+
+export const deleteMe = () => {};

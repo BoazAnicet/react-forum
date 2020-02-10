@@ -13,9 +13,9 @@ import {
   Code,
   LooksOne,
   LooksTwo,
-  FormatQuote,
-  FormatListNumbered,
-  FormatListBulleted
+  FormatQuote
+  // FormatListNumbered,
+  // FormatListBulleted
 } from "@material-ui/icons";
 
 import { ToggleButton } from "@material-ui/lab";
@@ -116,8 +116,8 @@ export default props => {
             <BlockButton format="heading-one" icon={<LooksOne />} />
             <BlockButton format="heading-two" icon={<LooksTwo />} />
             <BlockButton format="block-quote" icon={<FormatQuote />} />
-            <BlockButton format="numbered-list" icon={<FormatListNumbered />} />
-            <BlockButton format="bulleted-list" icon={<FormatListBulleted />} />
+            {/* <BlockButton format="numbered-list" icon={<FormatListNumbered />} /> */}
+            {/* <BlockButton format="bulleted-list" icon={<FormatListBulleted />} /> */}
           </Paper>
         ) : (
           <></>

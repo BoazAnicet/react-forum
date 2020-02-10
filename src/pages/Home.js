@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Table } from "../components";
 import { fetchThreads } from "../actions";
 import categories from "../categories";
+// import { fetchPagedThreads } from "../actions/threadActions";
 
 const TabPanel = props => {
   const { children, value, index, ...other } = props;
@@ -51,8 +52,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    // maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    marginBottom: theme.spacing(3)
   }
 }));
 
@@ -62,13 +63,14 @@ export default props => {
   const dispatch = useDispatch();
   const threads = useSelector(state => state.threads);
   const [fetching, setFetching] = useState(true);
+  // const [page, setPage] = useState(1);
 
   useEffect(() => {
     dispatch(
       fetchThreads(
         { category: categories[0].toLowerCase() },
-        success => setFetching(false),
-        fail => {}
+        // { limit: 10, page, category: categories[0].toLowerCase() },
+        success => setFetching(false)
       )
     );
     // eslint-disable-next-line
@@ -77,10 +79,8 @@ export default props => {
   const handleChange = (event, newValue) => {
     setFetching(true);
     dispatch(
-      fetchThreads(
-        { category: categories[newValue].toLowerCase() },
-        success => setFetching(false),
-        fail => {}
+      fetchThreads({ category: categories[newValue].toLowerCase() }, success =>
+        setFetching(false)
       )
     );
     setValue(newValue);
@@ -93,7 +93,8 @@ export default props => {
     categories.map((c, i) => {
       return (
         <TabPanel key={c} value={value} index={i}>
-          <Table threads={threads} />
+          <Table threads={threads} count={threads.length} />
+          {/* <Table threads={threads} count={count} /> */}
         </TabPanel>
       );
     });

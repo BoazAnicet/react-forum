@@ -135,7 +135,7 @@ export default props => {
                 <Grid
                   item
                   className={classes.icons}
-                  onClick={() => setEditing(!editing)}
+                  // onClick={() => setEditing(!editing)}
                 >
                   <SvgIcon>
                     <Edit width={18} />

@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, IS_LOGGED_IN } from "./types";
+import { LOGIN, LOGOUT, IS_LOGGED_IN, FETCH_PROFILE } from "./types";
 import { fetchPosts, createPost } from "./postActions";
 import { signUp, updateMe } from "./userActions";
 import {
@@ -10,17 +10,22 @@ import {
 import axios from "axios";
 const baseURL = "http://127.0.0.1:3001/api/v1/users";
 
-export const login = (credentials, callback) => async dispatch => {
-  const user = await axios.post(`${baseURL}/login/`, credentials, {
-    withCredentials: true
-  });
+export const login = (credentials, success, fail) => async dispatch => {
+  success = typeof success !== "undefined" ? success : () => {};
+  fail = typeof fail !== "undefined" ? fail : () => {};
 
-  dispatch({
-    type: LOGIN,
-    user: user.data.data.user
-  });
+  try {
+    const user = await axios.post(`${baseURL}/login/`, credentials, {
+      withCredentials: true
+    });
 
-  callback();
+    dispatch({
+      type: LOGIN,
+      user: user.data.data.user
+    });
+  } catch (error) {
+    fail();
+  }
 };
 
 export const logout = () => async dispatch => {
@@ -50,6 +55,24 @@ export const isLoggedIn = (success, fail) => async dispatch => {
     dispatch({
       type: IS_LOGGED_IN,
       user: res.data.currentUser
+    });
+
+    success();
+  } catch (error) {
+    fail();
+  }
+};
+
+export const fetchProfile = (id, success, fail) => async dispatch => {
+  success = typeof success !== "undefined" ? success : () => {};
+  fail = typeof fail !== "undefined" ? fail : () => {};
+
+  try {
+    const res = await axios.get(`${baseURL}/${id}`, { withCredentials: true });
+
+    dispatch({
+      type: FETCH_PROFILE,
+      payload: res.data.data.user
     });
 
     success();

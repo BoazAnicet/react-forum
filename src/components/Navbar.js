@@ -11,8 +11,10 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Divider
+  Divider,
+  SvgIcon
 } from "@material-ui/core";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,14 +69,26 @@ export default props => {
           </div>
           {user ? (
             <>
-              <Avatar
-                alt="me"
-                src={user.photo}
-                // component={Button}
-                onClick={handleClick}
-                // to="/profile"
+              <div
+                style={{ display: "flex", alignItems: "center" }}
                 className={classes.avatar}
-              />
+                onClick={handleClick}
+              >
+                <Avatar
+                  alt="me"
+                  src={user.photo}
+                  // component={Button}
+                  // onClick={handleClick}
+                  // to="/profile"
+                  // className={classes.avatar}
+                />
+                <Typography style={{ marginLeft: "10px" }}>
+                  {user.username}
+                </Typography>
+                <SvgIcon>
+                  <ArrowDropDownIcon />
+                </SvgIcon>
+              </div>
               <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -89,8 +103,15 @@ export default props => {
                 >
                   New Thread
                 </MenuItem>
-                <MenuItem onClick={handleClose} component={Link} to="/profile">
+                <MenuItem
+                  onClick={handleClose}
+                  component={Link}
+                  to={`/profile/${user._id}`}
+                >
                   Profile
+                </MenuItem>
+                <MenuItem onClick={handleClose} component={Link} to="/settings">
+                  Settings
                 </MenuItem>
                 <Divider />
                 <MenuItem
