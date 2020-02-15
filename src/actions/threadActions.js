@@ -6,14 +6,16 @@ import {
   FETCH_PAGED_THREADS
 } from "./types";
 import axios from "axios";
-const baseUrl = "http://127.0.0.1:3001/api/v1/threads";
+import { baseURL as BASE_URL } from "./index";
 
-export const createThread = (data, success, fail) => async dispatch => {
+export const createThread = (body, success, fail) => async dispatch => {
   success = typeof success !== "undefined" ? success : () => {};
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const res = await axios.post(baseUrl, data, { withCredentials: true });
+    const res = await axios.post(`${BASE_URL}/threads`, body, {
+      withCredentials: true
+    });
 
     dispatch({
       type: CREATE_THREAD,
@@ -31,7 +33,7 @@ export const fetchThread = (id, success, fail) => async dispatch => {
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const res = await axios.get(`${baseUrl}/${id}`, {
+    const res = await axios.get(`${BASE_URL}/threads/${id}`, {
       withCredentials: true
     });
 
@@ -52,7 +54,7 @@ export const fetchThreads = (data, success, fail) => async dispatch => {
 
   try {
     const res = await axios.get(
-      `${baseUrl}`,
+      `${BASE_URL}/threads`,
       { params: { ...data } },
       {
         withCredentials: true
@@ -76,7 +78,7 @@ export const updateThread = (thread, success, fail) => async dispatch => {
 
   try {
     const res = await axios.patch(
-      `${baseUrl}/${thread.id}`,
+      `${BASE_URL}/threads/${thread.id}`,
       { ...thread.body },
       {
         withCredentials: true
@@ -99,7 +101,7 @@ export const fetchPagedThreads = (req, success, fail) => async dispatch => {
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const res = await axios.get(`${baseUrl}/paged-threads`, {
+    const res = await axios.get(`${BASE_URL}/threads/paged-threads`, {
       params: { ...req },
       withCredentials: true
     });

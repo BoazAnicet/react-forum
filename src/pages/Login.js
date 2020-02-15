@@ -53,12 +53,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login(props) {
-  // document.title = "Login";
+export default props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("Adam@pontepiefarms.com");
-  // const [password, setPassword] = useState("password");
   const user = useSelector(state => state.user);
   const [errors, setErrors] = useState({ login: "" });
   const history = useHistory();
@@ -156,4 +153,4 @@ export default function Login(props) {
       </Box> */}
     </Container>
   );
-}
+};

@@ -55,17 +55,10 @@ export default props => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [username, setUsername] = useState("");
-  // const [firstName, setFirstName] = useState("test");
-  // const [lastName, setLastName] = useState("user");
-  // const [email, setEmail] = useState("test@user.com");
-  // const [password, setPassword] = useState("hello123");
-  // const [passwordConfirm, setPasswordConfirm] = useState("hello123");
 
   useEffect(() => {
     if (user) {
@@ -79,8 +72,6 @@ export default props => {
     dispatch(
       signUp(
         {
-          // firstName,
-          // lastName,
           username,
           email,
           password,
@@ -118,33 +109,6 @@ export default props => {
                 autoFocus
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="firstName"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                value={firstName}
-                onChange={e => setFirstName(e.target.value)}
-                autoFocus
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={lastName}
-                onChange={e => setLastName(e.target.value)}
-              />
-            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

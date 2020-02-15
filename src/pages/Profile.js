@@ -12,15 +12,9 @@ import {
 } from "@material-ui/core";
 import { fetchProfile } from "../actions";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
-  // paper: {
-  //   marginTop: theme.spacing(8),
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   alignItems: "center",
-
-  // },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
@@ -77,13 +71,21 @@ export default props => {
           </Grid>
 
           <Grid item xs={8} container>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <Typography variant={"h4"}>{profile.username}</Typography>
-              <Typography variant="caption">Member</Typography>
+              <Typography variant="subtitle2">Member</Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <InputLabel>Last Name</InputLabel>
-              <Typography>{profile.lastName || "lastName"}</Typography>
+            <Grid container spacing={3} item xs={12}>
+              <Grid item>
+                <InputLabel>Posts</InputLabel>
+                <Typography>{profile.postCount}</Typography>
+              </Grid>
+              <Grid item>
+                <InputLabel>Joined</InputLabel>
+                <Typography>
+                  {moment(profile.joinDate).format("MMMM Do, YYYY")}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -91,59 +93,3 @@ export default props => {
     </Container>
   );
 };
-// import React, { useEffect, useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import {
-//   Container,
-//   CircularProgress,
-//   Grid,
-//   Typography,
-//   InputLabel,
-//   Avatar
-// } from "@material-ui/core";
-// import { fetchProfile } from "../actions";
-// import { useHistory } from "react-router-dom";
-
-// export default props => {
-//   const profile = useSelector(state => state.profile);
-//   const dispatch = useDispatch();
-//   const history = useHistory();
-//   const [fetching, setFetching] = useState(true);
-//   const profileID = history.location.pathname.split("/")[2];
-
-//   useEffect(() => {
-//     dispatch(
-//       fetchProfile(
-//         profileID,
-//         success => setFetching(false),
-//         fail => history.push("/error")
-//       )
-//     );
-
-//     return () => {};
-//     // eslint-disable-next-line
-//   }, []);
-
-//   return fetching ? (
-//     <Container maxWidth={"md"}>
-//       <Grid container alignItems="center" justify="center">
-//         <Grid item>
-//           <CircularProgress>Loading</CircularProgress>
-//         </Grid>
-//       </Grid>
-//     </Container>
-//   ) : (
-//     <Container maxWidth="md">
-//       <Grid container>
-//         <Grid item xs={12} sm={6}>
-//           <InputLabel>First Name</InputLabel>
-//           <Typography>{profile.firstName || "firstName"}</Typography>
-//         </Grid>
-//         <Grid item xs={12} sm={6}>
-//           <InputLabel>Last Name</InputLabel>
-//           <Typography>{profile.lastName || "lastName"}</Typography>
-//         </Grid>
-//       </Grid>
-//     </Container>
-//   );
-// };

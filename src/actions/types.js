@@ -21,3 +21,6 @@ export const UPDATE_THREAD = "UPDATE_THREAD";
 
 // PROFILE
 export const FETCH_PROFILE = "FETCH_PROFILE";
+
+// AUTH
+export const UPDATE_PASSWORD = "UPDATE_PASSWORD";

@@ -55,6 +55,7 @@ export default props => {
   const { body, created, author, edited } = props.post;
   const [value, setValue] = useState(body);
   const editor = useMemo(() => withReact(createEditor()), []);
+  // eslint-disable-next-line
   const [editing, setEditing] = useState(false);
 
   return (

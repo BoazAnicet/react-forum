@@ -13,19 +13,23 @@ import {
   UPDATE_THREAD,
   FETCH_PAGED_THREADS,
   FETCH_PROFILE,
-  DELETE_ME
+  DELETE_ME,
+  UPDATE_PASSWORD
 } from "../actions/types";
 
 const user = (state = null, { type, user }) => {
   switch (type) {
+    // case UPDATE_ME:
+    //   return { ...state, ...user };
     case LOGIN:
     case IS_LOGGED_IN:
     case SIGN_UP:
-    case UPDATE_ME:
       return user;
     case DELETE_ME:
     case LOGOUT:
       return null;
+    case UPDATE_PASSWORD:
+    case UPDATE_ME:
     default:
       return state;
   }

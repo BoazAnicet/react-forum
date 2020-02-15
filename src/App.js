@@ -11,6 +11,8 @@ import Thread from "./pages/Thread";
 import SignUp from "./pages/SignUp";
 import Category from "./pages/Category";
 import Settings from "./pages/Settings";
+import SettingsEmail from "./pages/SettingsEmail";
+import SettingsPassword from "./pages/SettingsPassword";
 import { useSelector, useDispatch } from "react-redux";
 import { isLoggedIn } from "./actions";
 import { CircularProgress, CssBaseline, Container } from "@material-ui/core";
@@ -29,7 +31,7 @@ export default props => {
         )
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -62,7 +64,17 @@ export default props => {
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/error" component={ErrorPage} />
-          <Route exact path="/settings" component={Settings} />
+          <PrivateRoute exact path="/settings" component={Settings} />
+          <PrivateRoute
+            exact
+            path="/settings/email"
+            component={SettingsEmail}
+          />
+          <PrivateRoute
+            exact
+            path="/settings/password"
+            component={SettingsPassword}
+          />
           <Route path="*">
             <Redirect to="/error" />
           </Route>

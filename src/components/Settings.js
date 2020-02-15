@@ -5,18 +5,17 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { Divider, Container } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { Container } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function TabPanel(props) {
+const TabPanel = props => {
   const { children, value, index, ...other } = props;
 
   return (
     <Typography
       component="div"
       role="tabpanel"
-      hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       style={{ width: "100%" }}
@@ -25,7 +24,7 @@ function TabPanel(props) {
       {value === index && <Box p={3}>{children}</Box>}
     </Typography>
   );
-}
+};
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -38,7 +37,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: "flex"
-    // height: 224
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`
@@ -46,48 +44,27 @@ const useStyles = makeStyles(theme => ({
   divider: { width: "100%" }
 }));
 
-export default function VerticalTabs() {
+export default ({ value, Panel }) => {
   const classes = useStyles();
   const user = useSelector(state => state.user);
-
-  const Overview = () => {
-    return (
-      <>
-        <Typography variant={"h6"}>Display Name</Typography>
-        <Typography>{user.username}</Typography>
-        <br />
-        <Divider className={classes.divider} />
-        <br />
-        <Typography variant={"h6"}>Email Address</Typography>
-        <Typography>{user.email}</Typography>
-        <br />
-        <Divider className={classes.divider} />
-        <br />
-        <Typography variant={"h6"}>Password</Typography>
-        <Typography>********</Typography>
-      </>
-    );
-  };
 
   return (
     <Container maxWidth="lg">
       <div className={classes.root}>
         <Tabs
-          // orientation="horizontal"
           orientation="vertical"
           variant="scrollable"
-          value={0}
-          aria-label="Vertical tabs example"
+          value={value}
           className={classes.tabs}
         >
           <Tab label="Overview" component={Link} to="/settings" />
           <Tab label="Email" component={Link} to="/settings/email" />
           <Tab label="Password" component={Link} to="/settings/password" />
         </Tabs>
-        <TabPanel value={0} index={0}>
-          <Overview />
+        <TabPanel value={value} index={value}>
+          <Panel user={user} />
         </TabPanel>
       </div>
     </Container>
   );
-}
+};

@@ -12,8 +12,8 @@ import {
   // eslint-disable-next-line
   Code,
   LooksOne,
-  LooksTwo,
-  FormatQuote
+  LooksTwo
+  // FormatQuote
   // FormatListNumbered,
   // FormatListBulleted
 } from "@material-ui/icons";
@@ -115,7 +115,7 @@ export default props => {
             {/* <MarkButton format="code" icon={<Code />} /> */}
             <BlockButton format="heading-one" icon={<LooksOne />} />
             <BlockButton format="heading-two" icon={<LooksTwo />} />
-            <BlockButton format="block-quote" icon={<FormatQuote />} />
+            {/* <BlockButton format="block-quote" icon={<FormatQuote />} /> */}
             {/* <BlockButton format="numbered-list" icon={<FormatListNumbered />} /> */}
             {/* <BlockButton format="bulleted-list" icon={<FormatListBulleted />} /> */}
           </Paper>

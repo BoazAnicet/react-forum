@@ -149,7 +149,6 @@ export default function({ threads, count, ...props }) {
                 <Link className={classes.link} to={`/thread/${thread._id}`}>
                   {thread.title}
                 </Link>
-                {/* <Typography>{thread.author.firstName}</Typography> */}
               </TableCell>
               <TableCell align="right">
                 <Typography>{`Views: ${thread.views}`}</Typography>
@@ -167,7 +166,6 @@ export default function({ threads, count, ...props }) {
                 <Typography>
                   {moment(thread.lastPost.date).format("MMM. Do, YYYY")}
                 </Typography>
-                {/* {moment(thread.created).format("MMM. Do, YYYY")} */}
               </TableCell>
             </TableRow>
           ))}
@@ -181,12 +179,9 @@ export default function({ threads, count, ...props }) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[10, 15, 20]}
-              // rowsPerPageOptions={[5, 15, 25, { label: "All", value: -1 }]}
               colSpan={3}
-              // count={count}
               count={threads.length}
               rowsPerPage={rowsPerPage}
-              // rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{
                 inputProps: { "aria-label": "rows per page" },

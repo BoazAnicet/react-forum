@@ -1,6 +1,6 @@
 import { FETCH_POSTS, CREATE_POST } from "./types";
 import axios from "axios";
-const baseUrl = "http://127.0.0.1:3001/api/v1/posts";
+import { baseURL as BASE_URL } from "./index";
 
 export const fetchPosts = (data, success, fail) => async dispatch => {
   success = typeof success !== "undefined" ? success : () => {};
@@ -8,7 +8,7 @@ export const fetchPosts = (data, success, fail) => async dispatch => {
 
   try {
     const res = await axios.get(
-      baseUrl,
+      ` ${BASE_URL}/posts`,
       { params: { ...data } },
       { withCredentials: true }
     );
@@ -30,7 +30,7 @@ export const createPost = (data, success, fail) => async dispatch => {
 
   try {
     const res = await axios.post(
-      `${baseUrl}`,
+      `${BASE_URL}/posts`,
       { ...data },
       { withCredentials: true }
     );

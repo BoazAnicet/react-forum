@@ -1,6 +1,7 @@
 import { LOGIN, LOGOUT, IS_LOGGED_IN, FETCH_PROFILE } from "./types";
 import { fetchPosts, createPost } from "./postActions";
 import { signUp, updateMe } from "./userActions";
+import { updatePassword } from "./authActions";
 import {
   createThread,
   fetchThreads,
@@ -8,14 +9,15 @@ import {
   updateThread
 } from "./threadActions";
 import axios from "axios";
-const baseURL = "http://127.0.0.1:3001/api/v1/users";
+
+export const baseURL = "http://127.0.0.1:3001/api/v1";
 
 export const login = (credentials, success, fail) => async dispatch => {
   success = typeof success !== "undefined" ? success : () => {};
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const user = await axios.post(`${baseURL}/login/`, credentials, {
+    const user = await axios.post(`${baseURL}/users/login/`, credentials, {
       withCredentials: true
     });
 
@@ -30,7 +32,7 @@ export const login = (credentials, success, fail) => async dispatch => {
 
 export const logout = () => async dispatch => {
   await axios({
-    url: `${baseURL}/logout`,
+    url: `${baseURL}/users/logout`,
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -48,7 +50,7 @@ export const logout = () => async dispatch => {
 
 export const isLoggedIn = (success, fail) => async dispatch => {
   try {
-    const res = await axios.get(`${baseURL}/is-logged-in`, {
+    const res = await axios.get(`${baseURL}/users/is-logged-in`, {
       withCredentials: true
     });
 
@@ -68,7 +70,9 @@ export const fetchProfile = (id, success, fail) => async dispatch => {
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const res = await axios.get(`${baseURL}/${id}`, { withCredentials: true });
+    const res = await axios.get(`${baseURL}/users/${id}`, {
+      withCredentials: true
+    });
 
     dispatch({
       type: FETCH_PROFILE,
@@ -89,5 +93,6 @@ export {
   fetchThreads,
   fetchThread,
   updateThread,
-  updateMe
+  updateMe,
+  updatePassword
 };

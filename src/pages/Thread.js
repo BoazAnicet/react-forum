@@ -45,7 +45,7 @@ export default ({ location, ...props }) => {
       )
     );
     return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -112,9 +112,6 @@ export default ({ location, ...props }) => {
               <Link color="inherit" to="/">
                 Home
               </Link>
-              {/* <Link color="inherit" to={`/forums/${thread.category}`}>
-                {capitalize(thread.category)}
-              </Link> */}
               <Typography color="textPrimary">
                 {capitalize(thread.category)}
               </Typography>

@@ -74,14 +74,7 @@ export default props => {
                 className={classes.avatar}
                 onClick={handleClick}
               >
-                <Avatar
-                  alt="me"
-                  src={user.photo}
-                  // component={Button}
-                  // onClick={handleClick}
-                  // to="/profile"
-                  // className={classes.avatar}
-                />
+                <Avatar alt="me" src={user.photo} />
                 <Typography style={{ marginLeft: "10px" }}>
                   {user.username}
                 </Typography>

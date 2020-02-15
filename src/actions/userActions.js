@@ -1,10 +1,10 @@
 import { SIGN_UP, UPDATE_ME } from "./types";
 import axios from "axios";
-const baseUrl = "http://127.0.0.1:3001/api/v1/users";
+import { baseURL as BASE_URL } from "./index";
 
 // export const getOneUser = id => {
 //   return async dispatch => {
-//     const user = await axios.get(`${baseUrl}/${id}`, { withCredentials: true });
+//     const user = await axios.get(`${BASE_URL}/users/${id}`, { withCredentials: true });
 //   };
 // };
 
@@ -13,7 +13,7 @@ export const signUp = (body, success, fail) => async dispatch => {
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const user = await axios.post(`${baseUrl}/signup`, body, {
+    const user = await axios.post(`${BASE_URL}/users/signup`, body, {
       withCredentials: true
     });
 
@@ -33,7 +33,7 @@ export const updateMe = (body, success, fail) => async dispatch => {
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const res = await axios.patch(`${baseUrl}/update-me`, body, {
+    const res = await axios.patch(`${BASE_URL}/users/update-me`, body, {
       withCredentials: true
     });
 
