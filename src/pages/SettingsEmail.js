@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import { Divider, Grid, TextField, Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { updateMe } from "../actions";
 import Settings from "../components/Settings";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { updateEmail } from "../actions/userActions";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -16,15 +16,12 @@ const Email = () => {
   const dispatch = useDispatch();
   const [newEmail, setNewEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [message, setMessage] = useState("Message!");
   const [severity, setSeverity] = useState("success");
   const [open, setOpen] = useState(false);
-
   const [changing, setChanging] = useState(false);
-  //
   const [email, setEmail] = useState(user.email);
-  //
+
   useEffect(() => {
     setEmail(user.email);
   }, [user]);
@@ -46,17 +43,21 @@ const Email = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
+    setChanging(true);
+
     dispatch(
-      updateMe(
+      updateEmail(
         { email: newEmail, passwordCurrent: password },
         success => {
           openSnack("Email changed!", "success");
           setEmail(newEmail);
           setNewEmail("");
           setPassword("");
+          setChanging(false);
         },
         fail => {
-          openSnack("Error changing password!", "error");
+          openSnack("Error updating email!", "error");
+          setChanging(false);
         }
       )
     );

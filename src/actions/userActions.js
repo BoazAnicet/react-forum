@@ -48,4 +48,24 @@ export const updateMe = (body, success, fail) => async dispatch => {
   }
 };
 
+export const updateEmail = (body, success, fail) => async dispatch => {
+  success = typeof success !== "undefined" ? success : () => {};
+  fail = typeof fail !== "undefined" ? fail : () => {};
+
+  try {
+    const res = await axios.patch(`${BASE_URL}/users/update-my-email`, body, {
+      withCredentials: true
+    });
+
+    dispatch({
+      type: UPDATE_ME,
+      user: res.data.user
+    });
+
+    success();
+  } catch (error) {
+    fail();
+  }
+};
+
 export const deleteMe = () => {};

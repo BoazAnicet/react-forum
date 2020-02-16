@@ -78,7 +78,7 @@ export default props => {
         >
           <Grid item>
             <Typography variant="subtitle1" className={classes.link}>
-              {author.firstName}
+              {author.username}
             </Typography>
           </Grid>
 
@@ -90,7 +90,7 @@ export default props => {
             <Avatar
               src={author.photo}
               className={classes.large}
-              alt={author.firstName}
+              alt={author.username}
             />
           </Grid>
 

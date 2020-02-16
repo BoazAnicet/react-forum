@@ -8,7 +8,13 @@ import {
   Button,
   Breadcrumbs
 } from "@material-ui/core";
-import { fetchThread, updateThread, createPost, fetchPosts } from "../actions";
+import {
+  fetchThread,
+  updateThread,
+  createPost,
+  fetchPosts,
+  updateMe
+} from "../actions";
 import { Post, Editor } from "../components";
 import { Link, useHistory } from "react-router-dom";
 import { capitalize } from "../utils/helperFunctions";
@@ -22,6 +28,14 @@ export default ({ location, ...props }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const threadID = location.pathname.split("/")[2];
+
+  const handleReply = () => {
+    if (user) {
+      setReplying(true);
+    } else {
+      history.push("/login");
+    }
+  };
 
   const [value, setValue] = useState([
     {
@@ -62,7 +76,7 @@ export default ({ location, ...props }) => {
     if (user) {
       let author = {
         joinDate: user.joinDate,
-        firstName: user.firstName,
+        username: user.username,
         photo: user.photo,
         postCount: user.postCount,
         _id: user._id
@@ -76,12 +90,16 @@ export default ({ location, ...props }) => {
             created: Date.now()
           },
           success => {
+            dispatch(updateMe({ postCount: user.postCount + 1 }));
             dispatch(
               updateThread({
                 id: threadID,
                 body: {
                   replies: thread.replies + 1,
-                  lastPost: { author: user.firstName, date: Date.now() }
+                  lastPost: {
+                    author: { username: user.username, _id: user._id },
+                    date: Date.now()
+                  }
                 }
               })
             );
@@ -134,11 +152,7 @@ export default ({ location, ...props }) => {
           </Grid>
 
           <Grid item>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={() => setReplying(true)}
-            >
+            <Button color="secondary" variant="contained" onClick={handleReply}>
               Reply to this thread
             </Button>
           </Grid>
@@ -150,7 +164,6 @@ export default ({ location, ...props }) => {
                   <Grid item xs={12}>
                     <Editor value={value} onChange={value => setValue(value)} />
                   </Grid>
-
                   <Grid container item xs={12} spacing={1}>
                     <Grid item>
                       <Button type="submit" color="primary" variant="contained">

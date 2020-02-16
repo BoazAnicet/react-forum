@@ -13,14 +13,12 @@ function Alert(props) {
 
 const Password = () => {
   const dispatch = useDispatch();
-  const [passwordCurrent, setPasswordCurrent] = useState("hello1234");
-  const [newPassword, setNewPassword] = useState("hello1234");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("hello1234");
-
-  const [message, setMessage] = useState("Message!");
+  const [passwordCurrent, setPasswordCurrent] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("success");
   const [open, setOpen] = useState(false);
-
   const [changing, setChanging] = useState(false);
 
   const handleClose = (event, reason) => {
@@ -41,6 +39,7 @@ const Password = () => {
     e.preventDefault();
     setChanging(true);
     if (newPassword !== confirmNewPassword) {
+      setChanging(false);
       return openSnack("New and confirm passwords do not match!", "error");
     }
 
@@ -121,7 +120,6 @@ const Password = () => {
             type="submit"
             disabled={changing}
           >
-            {/* <Button variant="contained" color="primary" type="submit"> */}
             Save
           </Button>
         </Grid>
