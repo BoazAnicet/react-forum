@@ -10,7 +10,8 @@ import {
 } from "./threadActions";
 import axios from "axios";
 
-export const baseURL = "http://127.0.0.1:3001/api/v1";
+// export const baseURL = "http://127.0.0.1:3001/api/v1";
+export const baseURL = "https://arcane-gorge-24995.herokuapp.com/api/v1";
 
 export const login = (credentials, success, fail) => async dispatch => {
   success = typeof success !== "undefined" ? success : () => {};
