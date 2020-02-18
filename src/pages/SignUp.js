@@ -153,6 +153,7 @@ export default props => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                placeholder="Fake emails are fine"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />

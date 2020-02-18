@@ -70,7 +70,7 @@ export const fetchProfile = (id, success, fail) => async dispatch => {
   fail = typeof fail !== "undefined" ? fail : () => {};
 
   try {
-    const res = await axios.get(`${baseURL}/users/${id}`, {
+    const res = await axios.get(`${baseURL}/users/profile/${id}`, {
       withCredentials: true
     });
 

@@ -25,6 +25,7 @@ export default ({ ...props }) => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const user = useSelector(state => state.user);
+  const [posting, setPosting] = useState(false);
   const dispatch = useDispatch();
 
   const [value, setValue] = useState([
@@ -59,16 +60,20 @@ export default ({ ...props }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
+    setPosting(true);
+
     if (user) {
-      if (postLength < 10) {
+      if (postLength < 5) {
+        setPosting(false);
         return setErrors({
           ...errors,
-          postLength: "The body must be at least 10 characters"
+          postLength: "The body must be at least 5 characters"
         });
-      } else if (title.length < 10) {
+      } else if (title.length < 5) {
+        setPosting(false);
         return setErrors({
           ...errors,
-          titleLength: "The title must be at least 10 characters"
+          titleLength: "The title must be at least 5 characters"
         });
       } else {
         let author = {
@@ -104,12 +109,17 @@ export default ({ ...props }) => {
                   success =>
                     dispatch(
                       updateMe({ postCount: user.postCount + 1 }, success =>
-                        props.history.push(`/thread/${id}`)
+                        setTimeout(
+                          () => props.history.push(`/thread/${id}`),
+                          1500
+                        )
                       )
-                    )
+                    ),
+                  fail => setPosting(false)
                 )
               );
-            }
+            },
+            fail => setPosting(false)
           )
         );
       }
@@ -155,11 +165,16 @@ export default ({ ...props }) => {
 
           <Grid item xs={12}>
             <Editor value={value} onChange={value => setValue(value)} />
-            <Typography>{errors.postLength}</Typography>
+            <Typography color="error">{errors.postLength}</Typography>
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={posting}
+            >
               Submit
             </Button>
           </Grid>

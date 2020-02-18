@@ -9,7 +9,7 @@ import NewThread from "./pages/NewThread";
 import Login from "./pages/Login";
 import Thread from "./pages/Thread";
 import SignUp from "./pages/SignUp";
-import Category from "./pages/Category";
+// import Category from "./pages/Category";
 import Settings from "./pages/Settings";
 import SettingsEmail from "./pages/SettingsEmail";
 import SettingsPassword from "./pages/SettingsPassword";
