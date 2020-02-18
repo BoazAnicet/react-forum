@@ -42,7 +42,7 @@ export const createPost = (data, success, fail) => async dispatch => {
 
     success();
   } catch (error) {
-    fail();
+    fail(error.message);
   }
 };
 

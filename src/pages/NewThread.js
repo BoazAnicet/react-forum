@@ -27,6 +27,7 @@ export default ({ ...props }) => {
   const user = useSelector(state => state.user);
   const [posting, setPosting] = useState(false);
   const dispatch = useDispatch();
+  let id = "";
 
   const [value, setValue] = useState([
     {
@@ -78,7 +79,7 @@ export default ({ ...props }) => {
       } else {
         let author = {
           joinDate: user.joinDate,
-          firstName: user.firstName,
+          username: user.username,
           photo: user.photo,
           postCount: user.postCount,
           _id: user._id
@@ -97,7 +98,7 @@ export default ({ ...props }) => {
               }
             },
             success => {
-              let id = success;
+              id = success;
               dispatch(
                 createPost(
                   {
@@ -109,13 +110,11 @@ export default ({ ...props }) => {
                   success =>
                     dispatch(
                       updateMe({ postCount: user.postCount + 1 }, success =>
-                        setTimeout(
-                          () => props.history.push(`/thread/${id}`),
-                          1500
-                        )
+                        props.history.push(`/thread/${id}`)
                       )
                     ),
-                  fail => setPosting(false)
+                  fail => props.history.push(`/thread/${id}`)
+                  // fail => setPosting(false)
                 )
               );
             },

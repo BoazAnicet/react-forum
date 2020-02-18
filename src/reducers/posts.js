@@ -1,6 +1,9 @@
 import { CREATE_POST, FETCH_PAGED_POSTS } from "../actions/types";
 
-export default (state = {}, { type, payload }) => {
+export default (
+  state = { totalData: [], totalCount: 0 },
+  { type, payload }
+) => {
   switch (type) {
     case FETCH_PAGED_POSTS:
       return payload;

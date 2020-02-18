@@ -19,6 +19,7 @@ export default (state = null, { type, user }) => {
       return null;
     case UPDATE_PASSWORD:
     case UPDATE_ME:
+      return { ...state, ...user };
     default:
       return state;
   }
