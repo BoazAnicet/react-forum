@@ -73,7 +73,6 @@ const Email = () => {
         <Grid item xs={12}>
           <Typography variant="h6">Current email address</Typography>
           <Typography>{email}</Typography>
-          {/* <Typography>{user.email}</Typography> */}
         </Grid>
         <Grid item xs={12} md={7}>
           <TextField

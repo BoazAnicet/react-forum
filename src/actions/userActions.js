@@ -1,4 +1,4 @@
-import { SIGN_UP, UPDATE_ME } from "./types";
+import { SIGN_UP, UPDATE_ME, DELETE_ME } from "./types";
 import axios from "axios";
 import { baseURL as BASE_URL } from "./index";
 
@@ -68,4 +68,23 @@ export const updateEmail = (body, success, fail) => async dispatch => {
   }
 };
 
-export const deleteMe = () => {};
+export const deleteMe = (body, success, fail) => async dispatch => {
+  success = typeof success !== "undefined" ? success : () => {};
+  fail = typeof fail !== "undefined" ? fail : () => {};
+
+  try {
+    // eslint-disable-next-line
+    const res = await axios.delete(`${BASE_URL}/users/delete-me`, {
+      withCredentials: true
+    });
+
+    dispatch({
+      type: DELETE_ME,
+      payload: null
+    });
+
+    success();
+  } catch (error) {
+    fail();
+  }
+};

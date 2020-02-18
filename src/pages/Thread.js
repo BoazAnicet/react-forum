@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Container,
-  Typography,
-  Grid,
-  CircularProgress,
-  Button,
-  Breadcrumbs
-} from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {
   fetchThread,
   updateThread,
   createPost,
-  fetchPosts,
-  updateMe
+  updateMe,
+  fetchPagedPosts
 } from "../actions";
 import { Post, Editor } from "../components";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { capitalize } from "../utils/helperFunctions";
+import Pagination from "@material-ui/lab/Pagination";
+import PaginationItem from "@material-ui/lab/PaginationItem";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export default ({ location, ...props }) => {
   const [loading, setLoading] = useState(true);
@@ -28,6 +32,41 @@ export default ({ location, ...props }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const threadID = location.pathname.split("/")[2];
+  let query = useQuery();
+  const [page, setPage] = useState(query.get("page") || 1);
+
+  function Page() {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}
+      >
+        <div style={{ flexGrow: 1 }}>
+          <Pagination
+            page={page * 1}
+            count={Math.ceil(posts.totalCount / 10).toPrecision(1) * 1}
+            siblingCount={0}
+            renderItem={item => (
+              <PaginationItem
+                component={Link}
+                to={`/thread/${threadID}${
+                  item.page === 1 ? "" : `?page=${item.page}`
+                }`}
+                {...item}
+                onClick={() => setPage(item.page)}
+              />
+            )}
+          />
+        </div>
+        <Button color="primary" variant="contained" onClick={handleReply}>
+          Reply to this thread
+        </Button>
+      </div>
+    );
+  }
 
   const handleReply = () => {
     if (user) {
@@ -50,7 +89,7 @@ export default ({ location, ...props }) => {
         threadID,
         success => {
           dispatch(
-            fetchPosts({ thread: threadID }, success => {
+            fetchPagedPosts({ thread: threadID, page }, success => {
               setLoading(false);
             })
           );
@@ -60,7 +99,7 @@ export default ({ location, ...props }) => {
     );
     return () => {};
     // eslint-disable-next-line
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     dispatch(updateThread({ id: threadID, body: { views: thread.views + 1 } }));
@@ -144,17 +183,19 @@ export default ({ location, ...props }) => {
           </Grid>
 
           <Grid item xs={12}>
+            <Page />
+          </Grid>
+
+          <Grid item xs={12}>
             <Typography variant="body1">{thread.body}</Typography>
           </Grid>
 
           <Grid item xs={12}>
-            {renderPosts(posts)}
+            {renderPosts(posts.totalData)}
           </Grid>
 
-          <Grid item>
-            <Button color="secondary" variant="contained" onClick={handleReply}>
-              Reply to this thread
-            </Button>
+          <Grid item xs={12}>
+            <Page />
           </Grid>
 
           {replying ? (
@@ -190,6 +231,16 @@ export default ({ location, ...props }) => {
                   </Grid>
                 </Grid>
               </form>
+              <Pagination
+                count={10}
+                renderItem={item => (
+                  <PaginationItem
+                    component={Link}
+                    to={`/cars${item.page === 1 ? "" : `?page=${item.page}`}`}
+                    {...item}
+                  />
+                )}
+              />
             </Grid>
           ) : (
             <></>

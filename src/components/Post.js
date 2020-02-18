@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { createEditor } from "slate";
 import { withReact } from "slate-react";
 import Editor from "../components/Editor";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -46,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-end"
+  },
+  link: {
+    textDecoration: "none"
   }
 }));
 
@@ -77,7 +81,12 @@ export default props => {
           direction="column"
         >
           <Grid item>
-            <Typography variant="subtitle1" className={classes.link}>
+            <Typography
+              variant="subtitle1"
+              className={classes.link}
+              component={Link}
+              to={`/profile/${author._id}`}
+            >
               {author.username}
             </Typography>
           </Grid>

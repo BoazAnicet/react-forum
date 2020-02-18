@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: "flex"
-    // height: 224
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`
@@ -73,7 +72,6 @@ export default function VerticalTabs() {
     <Container maxWidth="lg">
       <div className={classes.root}>
         <Tabs
-          // orientation="horizontal"
           orientation="vertical"
           variant="scrollable"
           value={0}
@@ -83,6 +81,7 @@ export default function VerticalTabs() {
           <Tab label="Overview" component={Link} to="/settings" />
           <Tab label="Email" component={Link} to="/settings/email" />
           <Tab label="Password" component={Link} to="/settings/password" />
+          <Tab label="Delete" component={Link} to="/settings/delete" />
         </Tabs>
         <TabPanel value={0} index={0}>
           <Overview />

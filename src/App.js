@@ -13,6 +13,7 @@ import Category from "./pages/Category";
 import Settings from "./pages/Settings";
 import SettingsEmail from "./pages/SettingsEmail";
 import SettingsPassword from "./pages/SettingsPassword";
+import SettingsDelete from "./pages/SettingsDelete";
 import { useSelector, useDispatch } from "react-redux";
 import { isLoggedIn } from "./actions";
 import { CircularProgress, CssBaseline, Container } from "@material-ui/core";
@@ -57,7 +58,7 @@ export default props => {
             <Redirect to="/forums" />
           </Route>
           <Route exact path="/forums" component={Home} />
-          <Route exact path="/forums/:category" component={Category} />
+          {/* <Route exact path="/forums/:category" component={Category} /> */}
           <Route exact path="/profile/:id" component={Profile} />
           <PrivateRoute exact path="/thread/new" component={NewThread} />
           <Route exact path="/thread/:id" component={Thread} />
@@ -74,6 +75,11 @@ export default props => {
             exact
             path="/settings/password"
             component={SettingsPassword}
+          />
+          <PrivateRoute
+            exact
+            path="/settings/delete"
+            component={SettingsDelete}
           />
           <Route path="*">
             <Redirect to="/error" />

@@ -1,5 +1,5 @@
 import { LOGIN, LOGOUT, IS_LOGGED_IN, FETCH_PROFILE } from "./types";
-import { fetchPosts, createPost } from "./postActions";
+import { fetchPosts, createPost, fetchPagedPosts } from "./postActions";
 import { signUp, updateMe } from "./userActions";
 import { updatePassword } from "./authActions";
 import {
@@ -94,5 +94,6 @@ export {
   fetchThread,
   updateThread,
   updateMe,
-  updatePassword
+  updatePassword,
+  fetchPagedPosts
 };

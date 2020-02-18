@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
-import { Divider, Grid, TextField, Button } from "@material-ui/core";
+import {
+  Divider,
+  Grid,
+  TextField,
+  Button,
+  makeStyles
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { updatePassword } from "../actions";
 import Settings from "../components/Settings";
@@ -11,8 +17,18 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+const useStyles = makeStyles(theme => ({
+  valid: {
+    color: theme.palette.success.main
+  },
+  invalid: {
+    color: theme.palette.error.main
+  }
+}));
+
 const Password = () => {
   const dispatch = useDispatch();
+  const classes = useStyles();
   const [passwordCurrent, setPasswordCurrent] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -37,11 +53,23 @@ const Password = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
     setChanging(true);
-    if (newPassword !== confirmNewPassword) {
-      setChanging(false);
-      return openSnack("New and confirm passwords do not match!", "error");
+
+    if (
+      !newPassword.length >= 8 ||
+      !newPassword.match(/[0-9]/) ||
+      !newPassword.match(/[A-Z]/) ||
+      newPassword.match(/\s/) ||
+      newPassword !== confirmNewPassword
+    ) {
+      return setChanging(false);
     }
+
+    // if (newPassword !== confirmNewPassword) {
+    //   setChanging(false);
+    //   return openSnack("New and confirm passwords do not match!", "error");
+    // }
 
     dispatch(
       updatePassword(
@@ -100,6 +128,34 @@ const Password = () => {
             fullWidth
             required
           />
+          <Typography
+            className={
+              newPassword.length >= 8 ? classes.valid : classes.invalid
+            }
+          >
+            Must be a minimum of 8 characters
+          </Typography>
+          <Typography
+            className={
+              newPassword.match(/[0-9]/) ? classes.valid : classes.invalid
+            }
+          >
+            Must have at least one number
+          </Typography>
+          <Typography
+            className={
+              newPassword.match(/[A-Z]/) ? classes.valid : classes.invalid
+            }
+          >
+            Must contain at least one uppercase letter
+          </Typography>
+          <Typography
+            className={
+              !newPassword.match(/\s/) ? classes.valid : classes.invalid
+            }
+          >
+            CANNOT have any spaces
+          </Typography>
         </Grid>
         <Grid item xs={12} md={7}>
           <TextField
@@ -112,6 +168,15 @@ const Password = () => {
             fullWidth
             required
           />
+          <Typography
+            className={
+              newPassword === confirmNewPassword
+                ? classes.valid
+                : classes.invalid
+            }
+          >
+            Matches new password
+          </Typography>
         </Grid>
         <Grid item xs={12}>
           <Button

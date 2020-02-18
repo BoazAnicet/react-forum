@@ -60,6 +60,7 @@ export default ({ value, Panel }) => {
           <Tab label="Overview" component={Link} to="/settings" />
           <Tab label="Email" component={Link} to="/settings/email" />
           <Tab label="Password" component={Link} to="/settings/password" />
+          <Tab label="Delete" component={Link} to="/settings/delete" />
         </Tabs>
         <TabPanel value={value} index={value}>
           <Panel user={user} />

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 // import Checkbox from "@material-ui/core/Checkbox";
@@ -47,6 +46,12 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  valid: {
+    color: theme.palette.success.main
+  },
+  invalid: {
+    color: theme.palette.error.main
   }
 }));
 
@@ -69,6 +74,18 @@ export default props => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    if (!username.length >= 3 && !username.length <= 12) return;
+    if (!username.match(/^[a-zA-Z0-9_.]*$/)) return;
+    if (
+      !password.length >= 8 ||
+      !password.match(/[0-9]/) ||
+      !password.match(/[A-Z]/) ||
+      password.match(/\s/) ||
+      password !== passwordConfirm
+    )
+      return;
+
     dispatch(
       signUp(
         {
@@ -85,7 +102,6 @@ export default props => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -108,6 +124,25 @@ export default props => {
                 onChange={e => setUsername(e.target.value)}
                 autoFocus
               />
+              <Typography
+                className={
+                  username.match(/^[a-zA-Z0-9_.]*$/)
+                    ? classes.valid
+                    : classes.invalid
+                }
+                maxLength="12"
+              >
+                Contains only numbers and letters
+              </Typography>
+              <Typography
+                className={
+                  username.length >= 3 && username.length <= 12
+                    ? classes.valid
+                    : classes.invalid
+                }
+              >
+                Between 3-12 characters
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -135,7 +170,36 @@ export default props => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
               />
+              <Typography
+                className={
+                  password.length >= 8 ? classes.valid : classes.invalid
+                }
+              >
+                Must be a minimum of 8 characters
+              </Typography>
+              <Typography
+                className={
+                  password.match(/[0-9]/) ? classes.valid : classes.invalid
+                }
+              >
+                Must have at least one number
+              </Typography>
+              <Typography
+                className={
+                  password.match(/[A-Z]/) ? classes.valid : classes.invalid
+                }
+              >
+                Must contain at least one uppercase letter
+              </Typography>
+              <Typography
+                className={
+                  !password.match(/\s/) ? classes.valid : classes.invalid
+                }
+              >
+                CANNOT have any spaces
+              </Typography>
             </Grid>
+            {/*  */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -149,6 +213,13 @@ export default props => {
                 value={passwordConfirm}
                 onChange={e => setPasswordConfirm(e.target.value)}
               />
+              <Typography
+                className={
+                  password === passwordConfirm ? classes.valid : classes.invalid
+                }
+              >
+                Matches password
+              </Typography>
             </Grid>
             {/* <Grid item xs={12}>
               <FormControlLabel
@@ -168,7 +239,6 @@ export default props => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              {/* <Link href="/login" variant="body2"> */}
               <Link to="/login">Already have an account? Sign in</Link>
             </Grid>
           </Grid>

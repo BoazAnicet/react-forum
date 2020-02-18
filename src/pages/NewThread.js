@@ -130,7 +130,7 @@ export default ({ ...props }) => {
                 variant="outlined"
                 required
               />
-              <Typography>{errors.titleLength}</Typography>
+              <Typography color="error">{errors.titleLength}</Typography>
             </FormControl>
           </Grid>
 

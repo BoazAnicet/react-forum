@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2)
   },
   error: {
-    color: theme.palette.error
+    color: theme.palette.error.main
   }
 }));
 
@@ -102,6 +102,7 @@ export default props => {
             id="email"
             label="Email Address"
             name="email"
+            type="email"
             autoComplete="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
